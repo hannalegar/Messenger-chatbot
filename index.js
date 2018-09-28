@@ -73,7 +73,7 @@ function processPostback(event) {
         name = bodyObj.first_name;
         greeting = "Hi " + name + ". ";
       }
-      var message = greeting + "A Tarlósnak egy büdös buznyát se!";
+      var message = greeting + "A Tarlósnak egy büdös buznyát se";
       sendMessage(senderId, {text: message});
     });
   } else if (payload === "Correct") {
@@ -146,7 +146,7 @@ function getMovieDetail(userId, field) {
 
 function findMovie(userId, movieTitle) {
   request("http://www.omdbapi.com/?type=movie&amp;t=" + movieTitle, function (error, response, body) {
-    if (!error &amp;&amp; response.statusCode === 200) {
+    if (!error &amp&amp, response.statusCode === 200) {
       var movieObj = JSON.parse(body);
       if (movieObj.Response === "True") {
         var query = {user_id: userId};
