@@ -110,8 +110,7 @@ function processMessage(event) {
 
     // You may get a text or attachment but not both
     if (message.text) {
-      sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
-
+      
       Recipe.create({
         user_id: senderId,
         title: "title",
@@ -125,6 +124,7 @@ function processMessage(event) {
         }
       })
 
+      sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
 
     } else if (message.attachments) {
       sendMessage(senderId, {text: "Sorry, I don't understand your request."});
