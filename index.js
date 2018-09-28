@@ -110,48 +110,24 @@ function processMessage(event) {
 
     // You may get a text or attachment but not both
     if (message.text) {
-      var formattedMsg = message.text.toLowerCase().trim();
-
-      /*
-      // If we receive a text message, check to see if it matches any special
-      // keywords and send back the corresponding movie detail.
-      // Otherwise, search for new movie.
-      switch (formattedMsg) {
-        case "plot":
-        case "date":
-        case "runtime":
-        case "director":
-        case "cast":
-        case "rating":
-          getMovieDetail(senderId, formattedMsg);
-          break;
-
-        default:
-          findMovie(senderId, formattedMsg);
-      }
-      */
       sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
+
+      Recipe.create({
+        user_id: senderId,
+        title: "title",
+        ingredients: "hagyma",
+        description: "leiras" }, function (err, recipe){
+        var errmessage = {};
+        if (err) {
+          res.send(errmessage);
+        } else {
+          res.send(recipe);
+        }
+      })
+
+
     } else if (message.attachments) {
       sendMessage(senderId, {text: "Sorry, I don't understand your request."});
     }
   }
 }
-
-/*
-function getMovieDetail(userId, field) {
-  Movie.findOne({user_id: userId}, function(err, movie) {
-    if(err) {
-      sendMessage(userId, {text: "Something went wrong. Try again"});
-    } else {
-      sendMessage(userId, {text: movie[field]});
-    }
-  });
-}
-*/
-/*
-function findMovie(userId, movieTitle) {
- 
-
-  sendMessage(userId, {text: "asdsd"});
-}
-*/
