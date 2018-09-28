@@ -66,7 +66,7 @@ function processPostback(event) {
         name = bodyObj.first_name;
         greeting = "Hi " + name + ". ";
       }
-      var message = greeting + "ÉÉÉÉÉÉÉletre kelt!!!";
+      var message = greeting + "Tarlósnak egy büdös buznyát se!";
       sendMessage(senderId, {text: message});
     });
   }
