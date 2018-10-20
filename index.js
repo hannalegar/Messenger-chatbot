@@ -113,18 +113,30 @@ function processMessage(event) {
       
       //process if find a recipe. or create a new one
 
-      Recipe.Create(
-        { user_id: senderId,
+      Post.create(
+        { user_id : senderId,
           title : "title",
-          ingredients : ["hagyma, bacon"],
-          description : "description"
-        }, function (err, recipe){
-            if(err){
-              sendMessage(senderId, {text: "Sorry, I don't understand your request."});
-            } else {
-              res.send(recipe);
-            }
-          });
+          ingredients : "ing",
+          description : "desc"
+        }, function (err, post){
+        var errmessage = {};
+        if (err) {
+          if (err.errors.title) {
+            errmessage.title = err.errors.title.message;
+          }
+          if (err.errors.content) {
+            errmessage.content = err.errors.content.message;
+          }
+          if (err.errors.author) {
+            errmessage.author = err.errors.author.message;
+          }
+          sendMessage(senderId, {text: "Sorry, I don't understand your request."});
+          res.send(errmessage);
+        } else {
+          sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
+          res.send(post);
+        }
+      })
 
       sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
 
