@@ -113,12 +113,12 @@ function processMessage(event) {
       
       //process if find a recipe. or create a new one
 
-      Post.create(
+      Recipe.create(
         { user_id : senderId,
           title : "title",
           ingredients : "ing",
           description : "desc"
-        }, function (err, post){
+        }, function (err, recipe){
         var errmessage = {};
         if (err) {
           if (err.errors.title) {
@@ -134,9 +134,9 @@ function processMessage(event) {
           res.send(errmessage);
         } else {
           sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
-          res.send(post);
+          res.send(recipe);
         }
-      })
+      });
 
       sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
 
