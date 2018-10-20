@@ -116,24 +116,14 @@ function processMessage(event) {
       Recipe.create(
         { user_id : senderId,
           title : "title",
-          ingredients : ["ing1", "ing2"],
+          ingredients : ["ing1", "ing2", "ing3"],
           description : "desc"
         }, function (err, recipe){
         var errmessage = {};
         if (err) {
-          if (err.errors.title) {
-            errmessage.title = err.errors.title.message;
-          }
-          if (err.errors.content) {
-            errmessage.content = err.errors.content.message;
-          }
-          if (err.errors.author) {
-            errmessage.author = err.errors.author.message;
-          }
           sendMessage(senderId, {text: "Sorry, I don't understand your request."});
-          res.send(errmessage);
         } else {
-          res.send(recipe);
+          sendMessage(senderId, {text: "Elmentettem a receptet"});
         }
       });
 
