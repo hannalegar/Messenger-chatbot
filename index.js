@@ -116,7 +116,7 @@ function processMessage(event) {
       Recipe.create(
         { user_id : senderId,
           title : "title",
-          ingredients : "ing",
+          ingredients : ["ing1", "ing2"],
           description : "desc"
         }, function (err, recipe){
         var errmessage = {};
@@ -133,7 +133,6 @@ function processMessage(event) {
           sendMessage(senderId, {text: "Sorry, I don't understand your request."});
           res.send(errmessage);
         } else {
-          sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
           res.send(recipe);
         }
       });
