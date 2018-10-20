@@ -124,8 +124,7 @@ function processMessage(event) {
             } else {
               res.send(recipe);
             }
-            
-          })
+          });
 
       sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
 
