@@ -71,7 +71,7 @@ function processPostback(event) {
       } else {
         var bodyObj = JSON.parse(body);
         name = bodyObj.first_name;
-        greeting = "Csá " + name + ". ";
+        greeting = "Hello " + name + ". ";
       }
       var message = greeting;
       sendMessage(senderId, {text: message});
@@ -111,18 +111,21 @@ function processMessage(event) {
     // You may get a text or attachment but not both
     if (message.text) {
       
-      Recipe.create({
-        user_id: senderId,
-        title: "title",
-        ingredients: "hagyma",
-        description: "leiras" }, function (err, recipe){
-        var errmessage = {};
-        if (err) {
-          res.send(errmessage);
-        } else {
-          res.send(recipe);
-        }
-      })
+      //process if find a recipe. or create a new one
+
+      Recipe.Create(
+        { user_id: senderId,
+          title : "title",
+          ingredients : ["hagyma, bacon"],
+          description : "description"
+        }, function (err, recipe){
+            if(err){
+              sendMessage(senderId, {text: "Sorry, I don't understand your request."});
+            } else {
+              res.send(recipe);
+            }
+            
+          })
 
       sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
 
