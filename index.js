@@ -130,7 +130,9 @@ function processMessage(event) {
       });
       */
 
-      Recipe.findOne({ ingredients: "só" }, function(err, recipe){
+      //example of find a recipe and sen a response
+      
+      Recipe.findOne({ ingredients: message.text }, function(err, recipe){
         console.log("belépett a findOne-ba");
         if(err){
           console.log("nem talált ilyen receptet");
@@ -147,12 +149,11 @@ function processMessage(event) {
                         "Elkészítés: " + '\n' + recipe.description;  
 
           sendMessage(senderId, {text: message});
-
-          console.log("talált receptet de szar a templates bizbasz");
         }
       });
 
       sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
+      
     } else if (message.attachments) {
       sendMessage(senderId, {text: "Sorry, I don't understand your request."});
     }
