@@ -77,8 +77,8 @@ function processPostback(event) {
       }
       var message = greeting;
       function func (){
-        sendMessage(senderId, {text: message})
-        .then(() => quickReplies.sendQuickReplies(senderId));
+        sendMessage(senderId, {text: message});
+        quickReplies.sendQuickReplies(senderId);
       }
 
       func();
