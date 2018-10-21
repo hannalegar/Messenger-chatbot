@@ -141,7 +141,7 @@ function processMessage(event) {
           let description = recipe.description;
 
           recipe.ingredients.forEach(function(i){
-            ings += i + ", ";
+            ings += i + "," + '\n';
           });
 
           let message = title + '\n' +
