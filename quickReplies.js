@@ -1,3 +1,5 @@
+var request = require("request");
+
 exports.sendQuickReplies = function(senderId){
     request({
       url: "https://graph.facebook.com/v2.6/me/messages",
