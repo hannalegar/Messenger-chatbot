@@ -1,28 +1,36 @@
 var request = require("request");
 
-exports.sendFindOrCreateQuickReplies = function(senderId){
+exports.sendFindOrCreateQuickReplies = function(event){
     request({
       url: "https://graph.facebook.com/v2.6/me/messages",
       qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
       method: "POST",
       json : {
-            sender: {
-              "id": senderId
-            },
-            recipient : {
-              "id": 372924409900493
-            },
-            timestamp : 1464990849275,
-            message : {
-              mid : "mid.1464990849238:b9a22a2bcb1de31773",
-              text: "Red",
-              quick_reply: {
-                content_type :"text",
-                title :"piros",
-                payload : "RED"
+        "object": "page",
+        "entry": [
+          {
+            "id": 372924409900493,
+            "time": event.timestamp,
+            "messaging": [
+              {
+                "sender": {
+                  "id": event.sender.id
+                },
+                "recipient": {
+                  "id": 372924409900493
+                },
+                "timestamp": event.timestamp,
+                "message": {
+                  "quick_reply": {
+                    "payload": "RED"
+                  },
+                  "text": "Red"
+                }
               }
-            }
-          }  
+            ]
+          }
+        ]
+      }
     });
   }
 
