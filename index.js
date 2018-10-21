@@ -136,21 +136,8 @@ function processMessage(event) {
           console.log("nem talált ilyen receptet");
           sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
         } else {
-          message = {
-            attachment : {
-              type : "template",
-              payload : {
-                template_type : "receipt"
-              },
-              elements : [{
-                title : recipe.title,
-                ingredients : recipe.ingredients,
-                description : recipe.description
-              }]
-            }
-          }
           console.log("talált receptet de szar a templates bizbasz");
-          sendMessage(senderId, message);
+          sendMessage(senderId, recipe);
         }
       });
 
