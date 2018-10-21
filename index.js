@@ -92,6 +92,7 @@ function sendMessage(recipientId, message) {
     json: {
       recipient: {id: recipientId},
       message: message,
+      sender_action : "typing_on"
     }
   }, function(error, response, body) {
     if (error) {
@@ -111,6 +112,8 @@ function processMessage(event) {
     // You may get a text or attachment but not both
     if (message.text) {
       
+      sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
+
       //process if find a recipe. or create a new one
 
       //example of how to create a recipe
@@ -131,7 +134,7 @@ function processMessage(event) {
       */
 
       //example of find a recipe and sen a response
-      
+      /*
       Recipe.findOne({ ingredients: message.text }, function(err, recipe){
         if(err || recipe == null){
           console.log("nem talált ilyen receptet");
@@ -150,8 +153,8 @@ function processMessage(event) {
           sendMessage(senderId, {text: message});
         }
       });
+      */
 
-      sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
 
     } else if (message.attachments) {
       sendMessage(senderId, {text: "Sorry, I don't understand your request."});
