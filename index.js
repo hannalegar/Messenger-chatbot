@@ -85,7 +85,6 @@ function processPostback(event) {
 
 // sends message to user
 function sendMessage(recipientId, message) {
-  setTypingIndicatorOff(senderId);
   request({
     url: "https://graph.facebook.com/v2.6/me/messages",
     qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
@@ -191,8 +190,11 @@ function processMessage(event) {
       });
       */
 
-
+      
+      setTypingIndicatorOff(senderId);
     } else if (message.attachments) {
+      
+      setTypingIndicatorOff(senderId);
       sendMessage(senderId, {text: "Sorry, I don't understand your request."});
     }
   }
