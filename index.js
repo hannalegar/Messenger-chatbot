@@ -109,7 +109,8 @@ function processMessage(event) {
     var senderId = event.sender.id;
 
     if (message.text) {
-        if(message.text == "Recept keresés") {
+      /*  
+      if(message.text == "Recept keresés") {
           quickReplies.sendFindByQuickReplies(senderId);
         } else if (message.text == "Név") {
           sendMessage(senderId, {text: "Név alapján lesz keresés"}) 
@@ -118,7 +119,7 @@ function processMessage(event) {
         } else if (message.text == "Leírás") {
           sendMessage(senderId, {text: "Leírás alapján lesz keresés"}) 
         }
-      
+      */
 
     } else if (message.attachments) {
       sendMessage(senderId, {text: "Sajnos nem tudom értelmezi az üzeneted."});

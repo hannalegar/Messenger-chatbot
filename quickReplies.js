@@ -6,6 +6,7 @@ exports.sendFindOrCreateQuickReplies = function(senderId){
       qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
       method: "POST",
       json : {
+        type : "postback",
         recipient : {
             id : senderId },
         message : {
