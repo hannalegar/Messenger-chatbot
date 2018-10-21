@@ -6,7 +6,8 @@ var mongoose = require("mongoose");
 
 var db = mongoose.connect(process.env.MONGODB_URI);
 var Recipe = require("./models/recipes");
-var quickReplies = require("./quickReplies.js");
+
+const quickReplies = require('./quickReplies');
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
