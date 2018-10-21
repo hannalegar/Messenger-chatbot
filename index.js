@@ -82,7 +82,7 @@ function processPostback(event) {
         quickReplies.sendFindOrCreateQuickReplies(senderId);
       }
 
-      func(sendMessage(senderId, {text: message}), quickReplies.sendFindOrCreateQuickReplies(senderId));
+      func();
     });
   } else if (payload == "FIND_RECIPE"){
     quickReplies.sendFindByQuickReplies(senderId);
