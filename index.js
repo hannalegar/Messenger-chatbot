@@ -79,10 +79,8 @@ function processPostback(event) {
       sendMessage(senderId, {text: message});
       quickReplies.sendFindOrCreateQuickReplies(senderId);
     });
-  } else if (payload == "FIND_RECIPE"){
-    quickReplies.sendFindByQuickReplies(senderId);
-  } else if (payload == "CREATE_RECIPE"){
-    sendMessage(senderId, {text: "recept hozzáadása!"});
+  } else if (payload == "RED"){
+    sendMessage(senderId, {text: "véééégre ide jutottam"});
   }
 }
 

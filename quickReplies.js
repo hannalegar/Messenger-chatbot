@@ -6,24 +6,21 @@ exports.sendFindOrCreateQuickReplies = function(senderId){
       qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
       method: "POST",
       json : {
-        type : "postback",
-        recipient : {
-            id : senderId },
-        message : {
-          text : "Mit szeretnél csinálni?",
-          quick_replies :[
-            {
-              content_type :"text",
-              title :"Recept keresés",
-              payload : "FIND_RECIPE"
+            sender: {
+              "id": senderId
             },
-            {
-              content_type :"text",
-              title :"Recept hozzáadása",
-              payload : "CREATE_RECIPE"
-            }]
-        }
-      }
+            recipient : {
+              "id": 372924409900493
+            },
+            timestamp : 1464990849275,
+            message : {
+              mid : "mid.1464990849238:b9a22a2bcb1de31773",
+              text: "Red",
+              quick_reply: {
+                payload : "RED"
+              }
+            }
+          }  
     });
   }
 
