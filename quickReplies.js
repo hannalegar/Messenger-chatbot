@@ -7,7 +7,7 @@ exports.sendFindOrCreateQuickReplies = function(senderId){
       method: "POST",
       json : {
         recipient : {
-        id : senderId },
+            id : senderId },
         message : {
           text : "Mit szeretnél csinálni?",
           quick_replies :[
@@ -33,7 +33,7 @@ exports.sendFindByQuickReplies = function(senderId){
       method: "POST",
       json : {
         recipient : {
-        id : senderId },
+            id : senderId },
         message : {
           text : "Mit alapján szeretnél keresni?",
           quick_replies :[
@@ -56,3 +56,27 @@ exports.sendFindByQuickReplies = function(senderId){
       }
     });
   }
+
+exports.sendWebhookEvent = function(senderId, recipientId, messageId){
+    request({
+        url: "https://graph.facebook.com/v2.6/me/messages",
+        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+        method: "POST",
+        json : {
+            sender : {
+                id : senderId
+            },
+            recipient:{
+                id : recipientId
+            },
+            timestamp:1458692752478,
+            message : {
+                mid : messageId,
+                text : "hello, world!",
+                quick_reply : {
+                    payload: "DEVELOPER_DEFINED_PAYLOAD"
+                }
+            }
+        }      
+    }
+}

@@ -76,18 +76,16 @@ function processPostback(event) {
         greeting = "Hello " + name + ". ";
       }
       var message = greeting;
-     
-      function func (){
-        sendMessage(senderId, {text: message});
-        quickReplies.sendFindOrCreateQuickReplies(senderId);
-      }
-
-      func();
+      sendMessage(senderId, {text: message});
+      //quickReplies.sendFindOrCreateQuickReplies(senderId);
+      quickReplies.sendWebhookEvent(senderId, event.recipient.id, event.message.id)
     });
   } else if (payload == "FIND_RECIPE"){
     quickReplies.sendFindByQuickReplies(senderId);
   } else if (payload == "CREATE_RECIPE"){
     sendMessage(senderId, {text: "recept hozzáadása!"});
+  } else if (payload == "DEVELOPER_DEFINED_PAYLOAD"){
+    console.log("itt vagyoooooooooook!");
   }
 }
 
@@ -116,9 +114,9 @@ function processMessage(event) {
     if (message.text) {
         if(message.text == "Recept keresés") {
           quickReplies.sendFindByQuickReplies(senderId);
+        } else if (message.text == "Recept keresés") {
+          quickReplies.sendFindByQuickReplies(senderId);
         }
-
-      sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
       
 
     } else if (message.attachments) {
