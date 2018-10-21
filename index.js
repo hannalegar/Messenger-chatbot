@@ -6,7 +6,7 @@ var mongoose = require("mongoose");
 
 var db = mongoose.connect(process.env.MONGODB_URI);
 var Recipe = require("./models/recipes");
-var quckReplies = require("./quickReplies");
+var quickReplies = require("quickReplies");
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
@@ -76,7 +76,7 @@ function processPostback(event) {
       }
       var message = greeting;
       sendMessage(senderId, {text: message});
-      quckReplies.sendQuickReplies(senderId);
+      quickReplies.sendQuickReplies(senderId);
     });
   } else if (payload == "FIND_RECIPE"){
     sendMessage(senderId, {text: "recept keresése!"});
