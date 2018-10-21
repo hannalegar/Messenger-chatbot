@@ -77,7 +77,7 @@ function processPostback(event) {
       }
       var message = greeting;
       sendMessage(senderId, {text: message});
-      quickReplies.sendFindOrCreateQuickReplies(senderId);
+      quickReplies.sendFindOrCreateQuickReplies(event);
     });
   } else if (payload == "RED"){
     sendMessage(senderId, {text: "véééégre ide jutottam"});
