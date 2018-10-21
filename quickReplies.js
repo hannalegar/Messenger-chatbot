@@ -78,5 +78,5 @@ exports.sendWebhookEvent = function(senderId, recipientId, messageId){
                 }
             }
         }      
-    }
+    });
 }
