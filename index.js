@@ -78,10 +78,10 @@ function processPostback(event) {
       sendQuickReplies(senderId);
     });
   } else if (payload == "FIND_RECIPE"){
-    sendMessage(senderId, {text: "recept keresése indul!"});
+    sendMessage(senderId, {text: "recept keresése!"});
+  } else if (payload == "CREATE_RECIPE"){
+    sendMessage(senderId, {text: "recept hozzáadása!"});
   }
-  
-  
 }
 
 function sendQuickReplies(senderId){
@@ -127,7 +127,6 @@ function sendMessage(recipientId, message) {
   });
 }
 
-
 function processMessage(event) {
   if (!event.message.is_echo) {
     var message = event.message;
@@ -139,12 +138,7 @@ function processMessage(event) {
     if (message.text) {
       sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
       
-
-     
-
       
-      
-
     } else if (message.attachments) {
       sendMessage(senderId, {text: "Sajnos nem tudom értelmezi az üzeneted."});
     }
