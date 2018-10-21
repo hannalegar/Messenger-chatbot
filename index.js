@@ -137,7 +137,9 @@ function processMessage(event) {
           sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
         } else {
           console.log("talált receptet de szar a templates bizbasz");
-          sendMessage(senderId, recipe);
+          sendMessage(senderId, {text: recipe});
+          console.log("recipe" + recipe);
+          console.log("{text: recipe}" + {text: recipe});
         }
       });
 
