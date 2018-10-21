@@ -136,10 +136,24 @@ function processMessage(event) {
           console.log("nem talált ilyen receptet");
           sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
         } else {
+          var ings = "";
+
+          sendMessage(senderId, {text: recipe.title});
+          console.log("recipe.title" + recipe.title);
+
+          sendMessage(senderId, {text: "Hozzávalók:"});
+          recipe.ingredients.forEach(function(i){
+            ings.concat(i + "\n");
+            console.log("i: " + i);
+          });
+          sendMessage(senderId, {text: ings});
+          console.log("ings: " + ings);
+
+          sendMessage(senderId, {text: "Elkészítés:"});
+          sendMessage(senderId, {text: recipe.description});
+          console.log("description" + description);
+
           console.log("talált receptet de szar a templates bizbasz");
-          sendMessage(senderId, {text: JSON.stringify(recipe)});
-          console.log("recipe" + recipe);
-          console.log("{text: recipe}" + {text: recipe});
         }
       });
 
