@@ -130,6 +130,28 @@ function processMessage(event) {
       });
       */
 
+      Recipe.findOne({ ingredients: "bacon" }, function(err, recipe){
+        if(err){
+          sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
+        } else {
+          message = {
+            attachment : {
+              type : "template",
+              payload : {
+                template_type : "receipt"
+              },
+              elements : [{
+                title : recipe.title,
+                ingredients : recipe.ingredients,
+                description : recipe.description
+              }]
+            }
+          }
+
+          sendMessage(senderId, message);
+        }
+      })
+
       sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
     } else if (message.attachments) {
       sendMessage(senderId, {text: "Sorry, I don't understand your request."});
