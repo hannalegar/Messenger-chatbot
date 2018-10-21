@@ -85,6 +85,7 @@ function processPostback(event) {
 
 // sends message to user
 function sendMessage(recipientId, message) {
+  setTypingIndicatorOff(senderId);
   request({
     url: "https://graph.facebook.com/v2.6/me/messages",
     qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
@@ -100,10 +101,47 @@ function sendMessage(recipientId, message) {
   });
 }
 
+function setTypingIndicatorOn(recipientId) {
+  request({
+    url: "https://graph.facebook.com/v2.6/me/messages",
+    qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+    method: "POST",
+    json: {
+      recipient: {
+        id: recipientId
+      },
+      sender_action: "typing_on"
+    }
+  }, function(error, response, body) {
+    if (error) {
+      console.log("Error set typing indicator" + response.error);
+    }
+  });
+}
+
+function setTypingIndicatorOff(recipientId) {
+  request({
+    url: "https://graph.facebook.com/v2.6/me/messages",
+    qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+    method: "POST",
+    json: {
+      recipient: {
+        id: recipientId
+      },
+      sender_action: "typing_off"
+    }
+  }, function(error, response, body) {
+    if (error) {
+      console.log("Error set typing indicator" + response.error);
+    }
+  });
+}
+
 function processMessage(event) {
   if (!event.message.is_echo) {
     var message = event.message;
     var senderId = event.sender.id;
+    setTypingIndicatorOn(senderId);
 
     console.log("Received message from senderId: " + senderId);
     console.log("Message is: " + JSON.stringify(message));
@@ -112,7 +150,6 @@ function processMessage(event) {
     if (message.text) {
       
       sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
-
       //process if find a recipe. or create a new one
 
       //example of how to create a recipe
