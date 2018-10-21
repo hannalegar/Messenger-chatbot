@@ -52,11 +52,6 @@ app.post("/webhook", function (req, res) {
   }
 });
 
-function func(first, secund){
-  first();
-  secund();
-}
-
 function processPostback(event) {
   var senderId = event.sender.id;
   var payload = event.postback.payload;
@@ -81,16 +76,15 @@ function processPostback(event) {
         greeting = "Hello " + name + ". ";
       }
       var message = greeting;
-     /*
+     
       function func (){
         sendMessage(senderId, {text: message});
         quickReplies.sendFindOrCreateQuickReplies(senderId);
       }
-*/
+
       func(sendMessage(senderId, {text: message}), quickReplies.sendFindOrCreateQuickReplies(senderId));
     });
   } else if (payload == "FIND_RECIPE"){
-    sendMessage(senderId, {text: "recept keresése!"});
     quickReplies.sendFindByQuickReplies(senderId);
   } else if (payload == "CREATE_RECIPE"){
     sendMessage(senderId, {text: "recept hozzáadása!"});
