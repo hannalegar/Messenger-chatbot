@@ -136,17 +136,15 @@ function processMessage(event) {
           console.log("nem talált ilyen receptet");
           sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
         } else {
-          let title = recipe.title;
           let ings = ""; 
-          let description = recipe.description;
 
           recipe.ingredients.forEach(function(i){
             ings += i + "," + '\n';
           });
 
-          let message = title + '\n' +
+          let message = recipe.title + '\n\n' +
                         "Hozzávalók: " + '\n' + ings + '\n' +
-                        "Elkészítés: " + '\n' + description;  
+                        "Elkészítés: " + '\n' + recipe.description;  
 
           sendMessage(senderId, {text: message});
 
