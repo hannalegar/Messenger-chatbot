@@ -75,12 +75,34 @@ function processPostback(event) {
       }
       var message = greeting;
       sendMessage(senderId, {text: message});
+      sendQuickReplies(senderId);
     });
-  } else if (payload === "Correct") {
-    sendMessage(senderId, {text: "Awesome! What would you like to find out? Enter 'plot', 'date', 'runtime', 'director', 'cast' or 'rating' for the various details."});
-  } else if (payload === "Incorrect") {
-    sendMessage(senderId, {text: "Oops! Sorry about that. Try using the exact title of the movie"});
+  } else if (payload == "FIND_RECIPE"){
+    sendMessage(senderId, {text: "recept keresése indul!"});
   }
+  
+  
+}
+
+function sendQuickReplies(senderId){
+  request({
+    url: "https://graph.facebook.com/v2.6/me/messages",
+    qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+    method: "POST",
+    json : {
+      recipient : {
+      id : senderId },
+      message : {
+        text : "Here is a quick reply!",
+        quick_replies :[
+          {
+            content_type :"text",
+            title :"Recept keresés",
+            payload : "FIND_RECIPE"
+          }]
+      }
+    }
+  });
 }
 
 // sends message to user
@@ -98,102 +120,28 @@ function sendMessage(recipientId, message) {
       console.log("Error sending message: " + response.error);
     }
   });
-  setTypingIndicatorOff(recipientId);
 }
 
-function setTypingIndicatorOn(recipientId) {
-  request({
-    url: "https://graph.facebook.com/v2.6/me/messages",
-    qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-    method: "POST",
-    json: {
-      recipient: {
-        id: recipientId
-      },
-      sender_action: "typing_on"
-    }
-  }, function(error, response, body) {
-    if (error) {
-      console.log("Error set typing indicator" + response.error);
-    }
-  });
-}
-
-function setTypingIndicatorOff(recipientId) {
-  request({
-    url: "https://graph.facebook.com/v2.6/me/messages",
-    qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-    method: "POST",
-    json: {
-      recipient: {
-        id: recipientId
-      },
-      sender_action: "typing_off"
-    }
-  }, function(error, response, body) {
-    if (error) {
-      console.log("Error set typing indicator" + response.error);
-    }
-  });
-}
 
 function processMessage(event) {
   if (!event.message.is_echo) {
     var message = event.message;
     var senderId = event.sender.id;
 
-    setTypingIndicatorOn(senderId);
     console.log("Received message from senderId: " + senderId);
     console.log("Message is: " + JSON.stringify(message));
 
-    // You may get a text or attachment but not both
     if (message.text) {
-      
       sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
-      //process if find a recipe. or create a new one
-
-      //example of how to create a recipe
-      /*
-      Recipe.create(
-        { user_id : senderId,
-          title : "title",
-          ingredients : ["ing1", "ing2", "ing3"],
-          description : "desc"
-        }, function (err, recipe){
-        var errmessage = {};
-        if (err) {
-          sendMessage(senderId, {text: "Sorry, I don't understand your request."});
-        } else {
-          sendMessage(senderId, {text: "Elmentettem a receptet"});
-        }
-      });
-      */
-
-      //example of find a recipe and sen a response
       
-      Recipe.findOne({ ingredients: message.text }, function(err, recipe){
-        if(err || recipe == null){
-          console.log("nem talált ilyen receptet");
-          sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
-        } else {
-          let ings = ""; 
 
-          recipe.ingredients.forEach(function(i){
-            ings += i + "," + '\n';
-          });
+     
 
-          let message = recipe.title + '\n\n' +
-                        "Hozzávalók: " + '\n' + ings + '\n' +
-                        "Elkészítés: " + '\n' + recipe.description;  
-
-          sendMessage(senderId, {text: message});
-        }
-      });
+      
       
 
     } else if (message.attachments) {
-      
-      sendMessage(senderId, {text: "Sorry, I don't understand your request."});
+      sendMessage(senderId, {text: "Sajnos nem tudom értelmezi az üzeneted."});
     }
   }
 }
