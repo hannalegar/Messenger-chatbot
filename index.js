@@ -133,8 +133,7 @@ function processMessage(event) {
       //example of find a recipe and sen a response
       
       Recipe.findOne({ ingredients: message.text }, function(err, recipe){
-        console.log("belépett a findOne-ba");
-        if(err){
+        if(err || recipe == null){
           console.log("nem talált ilyen receptet");
           sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
         } else {
@@ -153,7 +152,7 @@ function processMessage(event) {
       });
 
       sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
-      
+
     } else if (message.attachments) {
       sendMessage(senderId, {text: "Sorry, I don't understand your request."});
     }
