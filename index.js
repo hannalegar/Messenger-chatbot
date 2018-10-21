@@ -91,8 +91,8 @@ function sendMessage(recipientId, message) {
     method: "POST",
     json: {
       recipient: {id: recipientId},
+      sender_action: "typing_on",
       message: message,
-      sender_action : "typing_on"
     }
   }, function(error, response, body) {
     if (error) {
