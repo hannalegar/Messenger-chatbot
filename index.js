@@ -76,10 +76,14 @@ function processPostback(event) {
         greeting = "Hello " + name + ". ";
       }
       var message = greeting;
-      let promise = new Promise(sendMessage(senderId, {text : message}));
-      promise.then(quickReplies.sendQuickReplies(senderId));
+      function func (){
+        sendMessage(senderId, {text: message})
+        .then(() => quickReplies.sendQuickReplies(senderId));
+      }
 
-      //sendMessage(senderId, {text: message}).then(quickReplies.sendQuickReplies(senderId));
+      func();
+      //sendMessage(senderId, {text: message});
+      //quickReplies.sendQuickReplies(senderId);
     });
   } else if (payload == "FIND_RECIPE"){
     sendMessage(senderId, {text: "recept keresése!"});
