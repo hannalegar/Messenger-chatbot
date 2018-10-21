@@ -113,10 +113,11 @@ function processMessage(event) {
     var message = event.message;
     var senderId = event.sender.id;
 
-    console.log("Received message from senderId: " + senderId);
-    console.log("Message is: " + JSON.stringify(message));
-
     if (message.text) {
+        if(message.text == "Recept keresés") {
+          quickReplies.sendFindByQuickReplies(senderId);
+        }
+
       sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
       
 
