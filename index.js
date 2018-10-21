@@ -93,12 +93,17 @@ function sendQuickReplies(senderId){
       recipient : {
       id : senderId },
       message : {
-        text : "Here is a quick reply!",
+        text : "Mit szeretnél csinálni?",
         quick_replies :[
           {
             content_type :"text",
             title :"Recept keresés",
             payload : "FIND_RECIPE"
+          },
+          {
+            content_type :"text",
+            title :"Recept hozzáadása",
+            payload : "CREATE_RECIPE"
           }]
       }
     }
