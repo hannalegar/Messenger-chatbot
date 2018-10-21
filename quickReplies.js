@@ -56,28 +56,3 @@ exports.sendFindByQuickReplies = function(senderId){
       }
     });
   }
-
-exports.sendWebhookEvent = function(event){
-    console.log("itt vagyoooook: sendWebhookEvent");
-    request({
-        url: "https://graph.facebook.com/v2.6/me/messages",
-        qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-        method: "POST",
-        json : {
-            sender : {
-                id : event.sender.id
-            },
-            recipient:{
-                id : event.recipient.id
-            },
-            timestamp:event.timestamp,
-            message : {
-                mid : 0,
-                text : "hello, world!",
-                quick_reply : {
-                    payload: "DEVELOPER_DEFINED_PAYLOAD"
-                }
-            }
-        }      
-    });
-}
