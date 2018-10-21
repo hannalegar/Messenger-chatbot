@@ -130,28 +130,25 @@ function processMessage(event) {
       });
       */
 
-      Recipe.findOne({ ingredients: "bacon" }, function(err, recipe){
+      Recipe.findOne({ ingredients: "só" }, function(err, recipe){
         console.log("belépett a findOne-ba");
         if(err){
           console.log("nem talált ilyen receptet");
           sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
         } else {
-          var ings = "";
+          let title = recipe.title;
+          let ings = ""; 
+          let description = recipe.description;
 
-          sendMessage(senderId, {text: recipe.title});
-          console.log("recipe.title" + recipe.title);
-
-          sendMessage(senderId, {text: "Hozzávalók:"});
           recipe.ingredients.forEach(function(i){
             ings += i + ", ";
-            console.log("i: " + i);
           });
-          sendMessage(senderId, {text: ings});
-          console.log("ings: " + ings);
 
-          sendMessage(senderId, {text: "Elkészítés:"});
-          sendMessage(senderId, {text: recipe.description});
-          console.log("description" + recipe.description);
+          let message = title + '\n' +
+                        "Hozzávalók: " + '\n' + ings + '\n' +
+                        "Elkészítés: " + '\n' + description;  
+
+          sendMessage(senderId, {text: message});
 
           console.log("talált receptet de szar a templates bizbasz");
         }
