@@ -131,7 +131,9 @@ function processMessage(event) {
       */
 
       Recipe.findOne({ ingredients: "bacon" }, function(err, recipe){
+        console.log("belépett a findOne-ba");
         if(err){
+          console.log("nem talált ilyen receptet");
           sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
         } else {
           message = {
@@ -147,10 +149,10 @@ function processMessage(event) {
               }]
             }
           }
-
+          console.log("talált receptet de szar a templates bizbasz");
           sendMessage(senderId, message);
         }
-      })
+      });
 
       sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
     } else if (message.attachments) {
