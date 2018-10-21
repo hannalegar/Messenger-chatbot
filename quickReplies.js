@@ -17,6 +17,8 @@ exports.sendFindOrCreateQuickReplies = function(senderId){
               mid : "mid.1464990849238:b9a22a2bcb1de31773",
               text: "Red",
               quick_reply: {
+                content_type :"text",
+                title :"piros",
                 payload : "RED"
               }
             }
