@@ -170,7 +170,7 @@ function processMessage(event) {
       */
 
       //example of find a recipe and sen a response
-      /*
+      
       Recipe.findOne({ ingredients: message.text }, function(err, recipe){
         if(err || recipe == null){
           console.log("nem talált ilyen receptet");
@@ -189,7 +189,7 @@ function processMessage(event) {
           sendMessage(senderId, {text: message});
         }
       });
-      */
+      
 
     } else if (message.attachments) {
       
