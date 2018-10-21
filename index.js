@@ -137,7 +137,7 @@ function processMessage(event) {
           sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
         } else {
           console.log("talált receptet de szar a templates bizbasz");
-          sendMessage(senderId, {text: recipe});
+          sendMessage(senderId, {text: JSON.stringify(recipe)});
           console.log("recipe" + recipe);
           console.log("{text: recipe}" + {text: recipe});
         }
