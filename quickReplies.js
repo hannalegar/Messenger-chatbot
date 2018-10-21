@@ -1,35 +1,27 @@
 var request = require("request");
 
-exports.sendFindOrCreateQuickReplies = function(event){
+exports.sendFindOrCreateQuickReplies = function(senderId){
     request({
       url: "https://graph.facebook.com/v2.6/me/messages",
       qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
       method: "POST",
       json : {
-        "object": "page",
-        "entry": [
-          {
-            "id": 372924409900493,
-            "time": event.timestamp,
-            "messaging": [
-              {
-                "sender": {
-                  "id": event.sender.id
-                },
-                "recipient": {
-                  "id": 372924409900493
-                },
-                "timestamp": event.timestamp,
-                "message": {
-                  "quick_reply": {
-                    "payload": "RED"
-                  },
-                  "text": "Red"
-                }
-              }
-            ]
-          }
-        ]
+        recipient : {
+            id : senderId },
+        message : {
+          text : "Mit szeretnél csinálni?",
+          quick_replies :[
+            {
+              content_type :"text",
+              title :"Recept keresés",
+              payload : "FIND_RECIPE"
+            },
+            {
+              content_type :"text",
+              title :"Recept hozzáadása",
+              payload : "CREATE_RECIPE"
+            }]
+        }
       }
     });
   }
