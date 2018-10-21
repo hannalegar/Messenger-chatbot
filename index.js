@@ -85,6 +85,7 @@ function processPostback(event) {
 
 // sends message to user
 function sendMessage(recipientId, message) {
+  setTypingIndicatorOn(senderId);
   request({
     url: "https://graph.facebook.com/v2.6/me/messages",
     qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
@@ -98,6 +99,7 @@ function sendMessage(recipientId, message) {
       console.log("Error sending message: " + response.error);
     }
   });
+  setTypingIndicatorOff(senderId);
 }
 
 function setTypingIndicatorOn(recipientId) {
@@ -140,7 +142,6 @@ function processMessage(event) {
   if (!event.message.is_echo) {
     var message = event.message;
     var senderId = event.sender.id;
-    setTypingIndicatorOn(senderId);
 
     console.log("Received message from senderId: " + senderId);
     console.log("Message is: " + JSON.stringify(message));
@@ -190,11 +191,8 @@ function processMessage(event) {
       });
       */
 
-      
-      setTypingIndicatorOff(senderId);
     } else if (message.attachments) {
       
-      setTypingIndicatorOff(senderId);
       sendMessage(senderId, {text: "Sorry, I don't understand your request."});
     }
   }
