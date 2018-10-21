@@ -76,8 +76,7 @@ function processPostback(event) {
         greeting = "Hello " + name + ". ";
       }
       var message = greeting;
-      sendMessage(senderId, {text: message});
-      quickReplies.sendQuickReplies(senderId);
+      sendMessage(senderId, {text: message}).then(quickReplies.sendQuickReplies(senderId));
     });
   } else if (payload == "FIND_RECIPE"){
     sendMessage(senderId, {text: "recept keresése!"});
