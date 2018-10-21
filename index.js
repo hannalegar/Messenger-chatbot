@@ -6,6 +6,7 @@ var mongoose = require("mongoose");
 
 var db = mongoose.connect(process.env.MONGODB_URI);
 var Recipe = require("./models/recipes");
+var quckReplies = require("./quickReplies");
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
@@ -75,39 +76,13 @@ function processPostback(event) {
       }
       var message = greeting;
       sendMessage(senderId, {text: message});
-      sendQuickReplies(senderId);
+      quckReplies.sendQuickReplies(senderId);
     });
   } else if (payload == "FIND_RECIPE"){
     sendMessage(senderId, {text: "recept keresése!"});
   } else if (payload == "CREATE_RECIPE"){
     sendMessage(senderId, {text: "recept hozzáadása!"});
   }
-}
-
-function sendQuickReplies(senderId){
-  request({
-    url: "https://graph.facebook.com/v2.6/me/messages",
-    qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
-    method: "POST",
-    json : {
-      recipient : {
-      id : senderId },
-      message : {
-        text : "Mit szeretnél csinálni?",
-        quick_replies :[
-          {
-            content_type :"text",
-            title :"Recept keresés",
-            payload : "FIND_RECIPE"
-          },
-          {
-            content_type :"text",
-            title :"Recept hozzáadása",
-            payload : "CREATE_RECIPE"
-          }]
-      }
-    }
-  });
 }
 
 // sends message to user
@@ -138,7 +113,7 @@ function processMessage(event) {
     if (message.text) {
       sendMessage(senderId, {text: "Megkaptam az üzeneted!"});
       
-      
+
     } else if (message.attachments) {
       sendMessage(senderId, {text: "Sajnos nem tudom értelmezi az üzeneted."});
     }
