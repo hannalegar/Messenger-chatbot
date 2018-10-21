@@ -85,7 +85,6 @@ function processPostback(event) {
 
 // sends message to user
 function sendMessage(recipientId, message) {
-  setTypingIndicatorOn(recipientId);
   request({
     url: "https://graph.facebook.com/v2.6/me/messages",
     qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
@@ -143,6 +142,7 @@ function processMessage(event) {
     var message = event.message;
     var senderId = event.sender.id;
 
+    setTypingIndicatorOn(senderId);
     console.log("Received message from senderId: " + senderId);
     console.log("Message is: " + JSON.stringify(message));
 
