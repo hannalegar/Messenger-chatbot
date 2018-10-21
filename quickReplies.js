@@ -57,21 +57,21 @@ exports.sendFindByQuickReplies = function(senderId){
     });
   }
 
-exports.sendWebhookEvent = function(senderId, messageId){
+exports.sendWebhookEvent = function(event){
     request({
         url: "https://graph.facebook.com/v2.6/me/messages",
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
         method: "POST",
         json : {
             sender : {
-                id : senderId
+                id : event.sender.id
             },
             recipient:{
-                id : 372924409900493
+                id : event.recipient.id
             },
-            timestamp:1458692752478,
+            timestamp:event.timestamp,
             message : {
-                mid : messageId,
+                mid : 0,
                 text : "hello, world!",
                 quick_reply : {
                     payload: "DEVELOPER_DEFINED_PAYLOAD"
