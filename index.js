@@ -143,7 +143,7 @@ function processMessage(event) {
 
           sendMessage(senderId, {text: "Hozzávalók:"});
           recipe.ingredients.forEach(function(i){
-            ings.concat(i + "\n");
+            ings += i + ", ";
             console.log("i: " + i);
           });
           sendMessage(senderId, {text: ings});
@@ -151,7 +151,7 @@ function processMessage(event) {
 
           sendMessage(senderId, {text: "Elkészítés:"});
           sendMessage(senderId, {text: recipe.description});
-          console.log("description" + description);
+          console.log("description" + recipe.description);
 
           console.log("talált receptet de szar a templates bizbasz");
         }
