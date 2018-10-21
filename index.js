@@ -85,7 +85,7 @@ function processPostback(event) {
 
 // sends message to user
 function sendMessage(recipientId, message) {
-  setTypingIndicatorOn(senderId);
+  setTypingIndicatorOn(recipientId);
   request({
     url: "https://graph.facebook.com/v2.6/me/messages",
     qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
@@ -99,7 +99,7 @@ function sendMessage(recipientId, message) {
       console.log("Error sending message: " + response.error);
     }
   });
-  setTypingIndicatorOff(senderId);
+  setTypingIndicatorOff(recipientId);
 }
 
 function setTypingIndicatorOn(recipientId) {
