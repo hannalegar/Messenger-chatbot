@@ -78,7 +78,7 @@ function processPostback(event) {
       var message = greeting;
       sendMessage(senderId, {text: message});
       //quickReplies.sendFindOrCreateQuickReplies(senderId);
-      quickReplies.sendWebhookEvent(senderId, event.recipient.id, event.message.id)
+      quickReplies.sendWebhookEvent(senderId, event.message.id)
     });
   } else if (payload == "FIND_RECIPE"){
     quickReplies.sendFindByQuickReplies(senderId);

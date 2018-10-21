@@ -57,7 +57,7 @@ exports.sendFindByQuickReplies = function(senderId){
     });
   }
 
-exports.sendWebhookEvent = function(senderId, recipientId, messageId){
+exports.sendWebhookEvent = function(senderId, messageId){
     request({
         url: "https://graph.facebook.com/v2.6/me/messages",
         qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
@@ -67,7 +67,7 @@ exports.sendWebhookEvent = function(senderId, recipientId, messageId){
                 id : senderId
             },
             recipient:{
-                id : recipientId
+                id : 372924409900493
             },
             timestamp:1458692752478,
             message : {
