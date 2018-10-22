@@ -112,11 +112,11 @@ function processMessage(event) {
         quickReplies.sendFindByQuickReplies(senderId);
 
       } else if(event.message.quick_reply.payload == "FIND_BY_TITLE"){
-        findBy = "title";
+        findBy = Recipe.title;
         sendMessage(senderId, {text: "Kérlek add meg a recept nevét"});
 
       } else if(event.message.quick_reply.payload == "FIND_BY_INGREDIENTS"){
-        findBy = "ingredients";
+        findBy = Recipe.ingredients;
         sendMessage(senderId, {text: "Kérlek adj meg egy hozzávalót"});
 
       } else if(event.message.quick_reply.payload == "FIND_BY_DESCRIPTION"){
@@ -125,7 +125,7 @@ function processMessage(event) {
       }  
     } else if (message.text) {  
       if(findBy != null){
-        FindRecipe(findBy, message.text);
+        FindRecipe(findBy, message.text, senderId);
       } else {
         sendMessage(senderId, {text: "Megkaptam az üzeneted"});
       }
@@ -138,7 +138,7 @@ function processMessage(event) {
   }
 }
 
-function FindRecipe(key, value){
+function FindRecipe(key, value, senderId){
   Recipe.findOne({ key : value }, function(err, recipe){
     if(err || recipe == null){
       console.log("nem talált ilyen receptet");
