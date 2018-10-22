@@ -10,11 +10,11 @@ var Recipe = require("./models/recipes");
 const quickReplies = require('./quickReplies');
 
 var findBy;
-var allAttribute = [];
-
-Recipe.schema.eachPath(function(path) {
-  allAttribute.push(path);
-});
+var allAttribute = {
+  title : title,
+  ing : ingredients,
+  des : description
+};
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
@@ -125,7 +125,7 @@ function processMessage(event) {
         
         console.log(allAttribute);
 
-        findBy = allAttribute[2];
+        findBy = allAttribute[1];
         console.log(findBy);
 
         sendMessage(senderId, {text: "Kérlek adj meg egy hozzávalót"});
@@ -154,7 +154,7 @@ function processMessage(event) {
 
 function FindRecipe(key, value, senderId){
   console.log("amit keres " + value);
-  console.log(typeof(key));
+  console.log("ami alapján " + typeof(key));
   Recipe.findOne({ key : value }, function(err, recipe){
     if(err || recipe == null){
       console.log(err);
