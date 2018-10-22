@@ -153,6 +153,8 @@ function processMessage(event) {
 }
 
 function FindRecipe(key, value, senderId){
+  console.log("amit keres " + value);
+  console.log(typeof(key));
   Recipe.findOne({ key : value }, function(err, recipe){
     if(err || recipe == null){
       console.log(err);
