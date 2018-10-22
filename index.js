@@ -9,6 +9,8 @@ var Recipe = require("./models/recipes");
 
 const quickReplies = require('./quickReplies');
 
+var findBy;
+
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -110,21 +112,23 @@ function processMessage(event) {
         quickReplies.sendFindByQuickReplies(senderId);
 
       } else if(event.message.quick_reply.payload == "FIND_BY_TITLE"){
-
-        sendMessage(senderId, {text: "FIND_BY_TITLE"});
+        findBy = title;
+        sendMessage(senderId, {text: "Kérlek add meg a recept nevét"});
 
       } else if(event.message.quick_reply.payload == "FIND_BY_INGREDIENTS"){
-
-        sendMessage(senderId, {text: "FIND_BY_INGREDIENTS"});
+        findBy = ingredients;
+        sendMessage(senderId, {text: "Kérlek adj meg egy hozzávalót"});
 
       } else if(event.message.quick_reply.payload == "FIND_BY_DESCRIPTION"){
-
-        sendMessage(senderId, {text: "FIND_BY_DESCRIPTION"});
-
+        findBy = description;
+        sendMessage(senderId, {text: "Kérlek add meg a lerást, vagy egy részét"});
       }  
     } else if (message.text) {  
-
-      sendMessage(senderId, {text: "Megkaptam az üzeneted"});
+      if(findBy != null){
+        FindRecipe(findBy, message.text);
+      } else {
+        sendMessage(senderId, {text: "Megkaptam az üzeneted"});
+      }
 
     } else if (message.attachments) {
 
@@ -153,4 +157,5 @@ function FindRecipe(findBy, key){
       sendMessage(senderId, {text: message});
     }
   });
+  findBy = null;
 }
