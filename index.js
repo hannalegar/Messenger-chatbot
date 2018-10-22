@@ -112,11 +112,11 @@ function processMessage(event) {
         quickReplies.sendFindByQuickReplies(senderId);
 
       } else if(event.message.quick_reply.payload == "FIND_BY_TITLE"){
-        findBy = Recipe.title;
+        findBy = JSON.parse("title");
         sendMessage(senderId, {text: "Kérlek add meg a recept nevét"});
 
       } else if(event.message.quick_reply.payload == "FIND_BY_INGREDIENTS"){
-        findBy = Recipe.ingredients;
+        findBy = JSON.parse("ingredients");
         console.log(findBy);
         sendMessage(senderId, {text: "Kérlek adj meg egy hozzávalót"});
 
