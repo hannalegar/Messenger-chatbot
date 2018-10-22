@@ -106,7 +106,9 @@ function processMessage(event) {
     var message = event.message;
     var senderId = event.sender.id;
 
-
+    Recipe.schema.eachPath(function(path){
+        console.log(typeof(path));
+    })
 
     if(event.message.hasOwnProperty('quick_reply')){
       if(event.message.quick_reply.payload == "FIND_RECIPE"){
