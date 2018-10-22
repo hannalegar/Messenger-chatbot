@@ -106,6 +106,8 @@ function processMessage(event) {
     var message = event.message;
     var senderId = event.sender.id;
 
+    console.log("mikodj már te buzi!");
+
     if(event.message.hasOwnProperty('quick_reply')){
       if(event.message.quick_reply.payload == "FIND_RECIPE"){
 
@@ -136,7 +138,7 @@ function processMessage(event) {
 
       sendMessage(senderId, {text: "Sajnos nem tudom értelmezi az üzeneted."});
 
-      
+
 
     }
   }
