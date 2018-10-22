@@ -55,7 +55,7 @@ app.post("/webhook", function (req, res) {
   }
 });
 
-async function processPostback(event) {
+function processPostback(event) {
   var senderId = event.sender.id;
   var payload = event.postback.payload;
 
@@ -80,8 +80,14 @@ async function processPostback(event) {
       }
       var message = greeting;
 
-      await sendMessage(senderId, {text: message});
-      quickReplies.sendFindOrCreateQuickReplies(senderId);
+
+      async function func(){
+        quickReplies.sendFindOrCreateQuickReplies(senderId) = await sendMessage(senderId, {text: message});
+      }
+      func();
+
+      // sendMessage(senderId, {text: message});
+      // quickReplies.sendFindOrCreateQuickReplies(senderId);
     });
   }
 }
