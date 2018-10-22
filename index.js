@@ -116,7 +116,7 @@ function processMessage(event) {
 
       } else if(event.message.quick_reply.payload == "FIND_BY_INGREDIENTS"){
         
-        findBy = mongoose.SchemaType.ingredients;
+        findBy = mongoose.SchemaType.Recipe.ingredients;
         console.log(findBy);
 
         sendMessage(senderId, {text: "Kérlek adj meg egy hozzávalót"});
