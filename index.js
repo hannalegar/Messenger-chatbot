@@ -125,6 +125,7 @@ function processMessage(event) {
       }  
     } else if (message.text) {  
       if(findBy != null){
+        console.log("ide talált, és a findby az" + findBy);
         FindRecipe(findBy, message.text, senderId);
       } else {
         sendMessage(senderId, {text: "Megkaptam az üzeneted"});
@@ -144,6 +145,7 @@ function FindRecipe(key, value, senderId){
       console.log("nem talált ilyen receptet");
       sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
     } else {
+      console.log("bejött ide csak buzi");
       let ings = ""; 
 
       recipe.ingredients.forEach(function(i){
