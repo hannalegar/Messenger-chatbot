@@ -10,6 +10,11 @@ var Recipe = require("./models/recipes");
 const quickReplies = require('./quickReplies');
 
 var findBy;
+var allAttribute = [];
+
+Recipe.schema.eachPath(function(path) {
+  allAttribute.push(path);
+});
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
@@ -106,6 +111,8 @@ function processMessage(event) {
     var message = event.message;
     var senderId = event.sender.id;
 
+
+
     if(event.message.hasOwnProperty('quick_reply')){
       if(event.message.quick_reply.payload == "FIND_RECIPE"){
 
@@ -116,9 +123,10 @@ function processMessage(event) {
 
       } else if(event.message.quick_reply.payload == "FIND_BY_INGREDIENTS"){
         
-        Recipe.schema.eachPath(function(path) {
-          console.log(path);
-      });
+        console.log(allAttribute);
+
+        findBy = allAttribute[2];
+        console.log(findBy);
 
         sendMessage(senderId, {text: "Kérlek adj meg egy hozzávalót"});
 
