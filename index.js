@@ -104,6 +104,8 @@ function processMessage(event) {
     var message = event.message;
     var senderId = event.sender.id;
 
+    console.log(event);
+
     if (message.text) {  
       if(message.text == "Recept keresés") {
           quickReplies.sendFindByQuickReplies(senderId);
