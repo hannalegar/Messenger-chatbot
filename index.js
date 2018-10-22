@@ -80,9 +80,6 @@ function processPostback(event) {
       quickReplies.sendFindOrCreateQuickReplies(senderId);
     });
   }
-  if(payload == "FIND_RECIPE"){
-    quickReplies.sendFindByQuickReplies(senderId);
-  }
 }
 
 // sends message to user
@@ -108,7 +105,9 @@ function processMessage(event) {
     var senderId = event.sender.id;
 
     if(event.message.hasOwnProperty('quick_reply')){
-      processPostback(event);
+      if(event.message.quick_reply.payload == "FIND_RECIPE"){
+        quickReplies.sendFindByQuickReplies(senderId);
+      }
     } else if (message.text) {  
       sendMessage(senderId, {text: "Megkaptam az üzeneted"});
     } else if (message.attachments) {
