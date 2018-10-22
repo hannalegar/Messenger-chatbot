@@ -105,18 +105,11 @@ function processMessage(event) {
     var senderId = event.sender.id;
 
     console.log(event);
+    console.log(event.message.quick_reply.payload);
+
 
     if (message.text) {  
-      if(message.text == "Recept keresés") {
-          quickReplies.sendFindByQuickReplies(senderId);
-        } else if (message.text == "Név") {
-          sendMessage(senderId, {text: "Név alapján lesz keresés"}) 
-        } else if (message.text == "Hozzávalók") {
-          sendMessage(senderId, {text: "Hozzávalók alapján lesz keresés"}) 
-        } else if (message.text == "Leírás") {
-          sendMessage(senderId, {text: "Leírás alapján lesz keresés"}) 
-        }
-
+      
     } else if (message.attachments) {
       sendMessage(senderId, {text: "Sajnos nem tudom értelmezi az üzeneted."});
     }
