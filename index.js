@@ -108,7 +108,7 @@ function processMessage(event) {
 
     Recipe.schema.eachPath(function(path){
         console.log(typeof(path));
-    })
+    });
 
     if(event.message.hasOwnProperty('quick_reply')){
       if(event.message.quick_reply.payload == "FIND_RECIPE"){
@@ -178,7 +178,7 @@ function FindByTitle(value, senderId){
 }
 
 function FindByIng(value, senderId){
-  Recipe.findOne({ ingredients : value }, function(err, recipe){
+  Recipe.findOne({ "ingredients" : value }, function(err, recipe){
     if(err || recipe == null){
       console.log("nem talált ilyen receptet");
       sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
