@@ -106,20 +106,19 @@ function processMessage(event) {
     var message = event.message;
     var senderId = event.sender.id;
 
-    console.log("mikodj már te buzi!");
-
     if(event.message.hasOwnProperty('quick_reply')){
       if(event.message.quick_reply.payload == "FIND_RECIPE"){
 
         quickReplies.sendFindByQuickReplies(senderId);
 
       } else if(event.message.quick_reply.payload == "FIND_BY_TITLE"){
-        findBy = JSON.parse("title");
         sendMessage(senderId, {text: "Kérlek add meg a recept nevét"});
 
       } else if(event.message.quick_reply.payload == "FIND_BY_INGREDIENTS"){
+        
         findBy = JSON.parse('{"ingredients"}');
         console.log(findBy);
+        
         sendMessage(senderId, {text: "Kérlek adj meg egy hozzávalót"});
 
       } else if(event.message.quick_reply.payload == "FIND_BY_DESCRIPTION"){
