@@ -148,7 +148,7 @@ function processMessage(event) {
 
 function FindRecipe(value, senderId){
   console.log(findBy);
-  Recipe.findOne({ findBy : value }, function(err, recipe){
+  Recipe.findOne({ [findBy] : value }, function(err, recipe){
     console.log(findBy);
     if(err || recipe == null){
       console.log("nem talált ilyen receptet");
