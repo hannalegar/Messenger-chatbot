@@ -104,16 +104,18 @@ function processMessage(event) {
     var message = event.message;
     var senderId = event.sender.id;
 
-    console.log(event);
+    //console.log(event);
     //console.log(event.message.quick_reply.payload);
-    console.log(event.message.hasOwnProperty(quick_reply));
+    //console.log(event.message.hasOwnProperty(quick_reply));
 
     if (message.text) {  
 
-
-
-
-      
+      sendMessage(senderId, {text: "Megkaptam az üzeneted"});
+      sendMessage(senderId, {text: "Megkaptam az üzeneted"});
+      sendMessage(senderId, {text: "Megkaptam az üzeneted"});
+      sendMessage(senderId, {text: "Megkaptam az üzeneted"});
+      sendMessage(senderId, {text: "Megkaptam az üzeneted"});
+      sendMessage(senderId, {text: "Megkaptam az üzeneted"});
       sendMessage(senderId, {text: "Megkaptam az üzeneted"});
 
     } else if (message.attachments) {
