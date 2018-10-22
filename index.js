@@ -155,6 +155,8 @@ function processMessage(event) {
 function FindRecipe(key, value, senderId){
   Recipe.findOne({ key : value }, function(err, recipe){
     if(err || recipe == null){
+      console.log(err);
+      console.log(recipe);
       console.log("nem talált ilyen receptet");
       sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
     } else {
