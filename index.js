@@ -105,11 +105,13 @@ function processMessage(event) {
     var senderId = event.sender.id;
 
     console.log(event);
-    console.log(event.message.quick_reply.payload);
-
+    //console.log(event.message.quick_reply.payload);
+    console.log(event.message.hasOwnProperty(quick_reply));
 
     if (message.text) {  
-      
+
+      sendMessage(senderId, {text: "Megkaptam az üzeneted"});
+
     } else if (message.attachments) {
       sendMessage(senderId, {text: "Sajnos nem tudom értelmezi az üzeneted."});
     }
