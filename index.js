@@ -110,6 +110,10 @@ function processMessage(event) {
 
     if (message.text) {  
 
+
+
+
+      
       sendMessage(senderId, {text: "Megkaptam az üzeneted"});
 
     } else if (message.attachments) {
