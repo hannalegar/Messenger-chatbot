@@ -106,7 +106,7 @@ function processMessage(event) {
 
     console.log(event);
     //console.log(event.message.quick_reply.payload);
-    console.log(event.message.hasOwnProperty(quick_reply));
+    console.log(event.message.hasOwnProperty('quick_reply'));
 
     if (message.text) {  
 
