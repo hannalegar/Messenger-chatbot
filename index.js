@@ -119,6 +119,7 @@ function processMessage(event) {
       } else if(event.message.quick_reply.payload == "FIND_BY_TITLE"){
         sendMessage(senderId, {text: "Kérlek add meg a recept nevét"});
         findBy = "title";
+        console.log(findBy);
 
       } else if(event.message.quick_reply.payload == "FIND_BY_INGREDIENTS"){
         sendMessage(senderId, {text: "Kérlek adj meg egy hozzávalót"});
@@ -146,11 +147,14 @@ function processMessage(event) {
 }
 
 function FindRecipe(value, senderId){
+  console.log(findBy);
   Recipe.findOne({ findBy : value }, function(err, recipe){
+    console.log(findBy);
     if(err || recipe == null){
       console.log("nem talált ilyen receptet");
       sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
     } else {
+      console.log(findBy);
       let ings = ""; 
 
       recipe.ingredients.forEach(function(i){
