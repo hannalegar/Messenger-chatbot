@@ -10,11 +10,6 @@ var Recipe = require("./models/recipes");
 const quickReplies = require('./quickReplies');
 
 var findBy;
-var allAttribute = {
-  title : title,
-  ing : ingredients,
-  des : description
-};
 
 var app = express();
 app.use(bodyParser.urlencoded({extended: false}));
@@ -120,24 +115,19 @@ function processMessage(event) {
 
       } else if(event.message.quick_reply.payload == "FIND_BY_TITLE"){
         sendMessage(senderId, {text: "Kérlek add meg a recept nevét"});
+        findBy = event.message.quick_reply.payload;
 
       } else if(event.message.quick_reply.payload == "FIND_BY_INGREDIENTS"){
-        
-        console.log(allAttribute);
-
-        findBy = allAttribute[1];
-        console.log(findBy);
-
         sendMessage(senderId, {text: "Kérlek adj meg egy hozzávalót"});
+        findBy = event.message.quick_reply.payload;
 
       } else if(event.message.quick_reply.payload == "FIND_BY_DESCRIPTION"){
-        findBy = "description";
         sendMessage(senderId, {text: "Kérlek add meg a lerást, vagy egy részét"});
+        findBy = event.message.quick_reply.payload;
       }  
     } else if (message.text) {  
       if(findBy != null){
-        console.log("ide talált, és a findby az" + findBy);
-        FindRecipe(findBy, message.text, senderId);
+        FindRecipe(message.text, senderId);
       } else {
         sendMessage(senderId, {text: "Megkaptam az üzeneted"});
       }
@@ -152,17 +142,24 @@ function processMessage(event) {
   }
 }
 
-function FindRecipe(key, value, senderId){
-  console.log("amit keres " + value);
-  console.log("ami alapján " + typeof(key));
-  Recipe.findOne({ key : value }, function(err, recipe){
+function FindRecipe(value, senderId){
+  if(findBy == "FIND_BY_TITLE"){
+    FindByTitle(value, senderId);
+  } else if(findBy == "FIND_BY_INGREDIENTS"){
+    FindByIng(value, senderId);
+  } else if(findBy == "FIND_BY_DESCRIPTION"){
+    FindByDesc(value, senderId);
+  }
+
+  findBy = null;
+}
+
+function FindByTitle(value, senderId){
+  Recipe.findOne({ title : value }, function(err, recipe){
     if(err || recipe == null){
-      console.log(err);
-      console.log(recipe);
       console.log("nem talált ilyen receptet");
       sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
     } else {
-      console.log("bejött ide csak buzi");
       let ings = ""; 
 
       recipe.ingredients.forEach(function(i){
@@ -176,5 +173,47 @@ function FindRecipe(key, value, senderId){
       sendMessage(senderId, {text: message});
     }
   });
-  findBy = null;
+}
+
+function FindByIng(value, senderId){
+  Recipe.findOne({ ingredients : value }, function(err, recipe){
+    if(err || recipe == null){
+      console.log("nem talált ilyen receptet");
+      sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
+    } else {
+      let ings = ""; 
+
+      recipe.ingredients.forEach(function(i){
+        ings += i + "," + '\n';
+      });
+
+      let message = recipe.title + '\n\n' +
+                    "Hozzávalók: " + '\n' + ings + '\n' +
+                    "Elkészítés: " + '\n' + recipe.description;  
+
+      sendMessage(senderId, {text: message});
+    }
+  });
+}
+
+
+function FindByDesc(value, senderId){
+  Recipe.findOne({ description : value }, function(err, recipe){
+    if(err || recipe == null){
+      console.log("nem talált ilyen receptet");
+      sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
+    } else {
+      let ings = ""; 
+
+      recipe.ingredients.forEach(function(i){
+        ings += i + "," + '\n';
+      });
+
+      let message = recipe.title + '\n\n' +
+                    "Hozzávalók: " + '\n' + ings + '\n' +
+                    "Elkészítés: " + '\n' + recipe.description;  
+
+      sendMessage(senderId, {text: message});
+    }
+  });
 }
