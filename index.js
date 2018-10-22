@@ -116,8 +116,8 @@ function processMessage(event) {
 
       } else if(event.message.quick_reply.payload == "FIND_BY_INGREDIENTS"){
         
-        findBy = Recipe.schema;
-        console.log(findBy);
+        console.log("type key" + Recipe.schema.eachPath);
+
 
         sendMessage(senderId, {text: "Kérlek adj meg egy hozzávalót"});
 
