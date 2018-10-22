@@ -55,7 +55,7 @@ app.post("/webhook", function (req, res) {
   }
 });
 
-function processPostback(event) {
+async function processPostback(event) {
   var senderId = event.sender.id;
   var payload = event.postback.payload;
 
@@ -79,7 +79,8 @@ function processPostback(event) {
         greeting = "Hello " + name + ". ";
       }
       var message = greeting;
-      sendMessage(senderId, {text: message});
+
+      await sendMessage(senderId, {text: message});
       quickReplies.sendFindOrCreateQuickReplies(senderId);
     });
   }
