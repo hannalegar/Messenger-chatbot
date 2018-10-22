@@ -8,7 +8,6 @@ var db = mongoose.connect(process.env.MONGODB_URI);
 var Recipe = require("./models/recipes");
 
 const quickReplies = require('./quickReplies');
-
 var findBy;
 
 var app = express();
@@ -117,15 +116,15 @@ function processMessage(event) {
 
       } else if(event.message.quick_reply.payload == "FIND_BY_TITLE"){
         sendMessage(senderId, {text: "Kérlek add meg a recept nevét"});
-        findBy = event.message.quick_reply.payload;
+        findBy = "title";
 
       } else if(event.message.quick_reply.payload == "FIND_BY_INGREDIENTS"){
         sendMessage(senderId, {text: "Kérlek adj meg egy hozzávalót"});
-        findBy = event.message.quick_reply.payload;
+        findBy = "ingredients";
 
       } else if(event.message.quick_reply.payload == "FIND_BY_DESCRIPTION"){
         sendMessage(senderId, {text: "Kérlek add meg a lerást, vagy egy részét"});
-        findBy = event.message.quick_reply.payload;
+        findBy = "description";
       }  
     } else if (message.text) {  
       if(findBy != null){
@@ -145,19 +144,7 @@ function processMessage(event) {
 }
 
 function FindRecipe(value, senderId){
-  if(findBy == "FIND_BY_TITLE"){
-    FindByTitle(value, senderId);
-  } else if(findBy == "FIND_BY_INGREDIENTS"){
-    FindByIng(value, senderId);
-  } else if(findBy == "FIND_BY_DESCRIPTION"){
-    FindByDesc(value, senderId);
-  }
-
-  findBy = null;
-}
-
-function FindByTitle(value, senderId){
-  Recipe.findOne({ title : value }, function(err, recipe){
+  Recipe.findOne({ findBy : value }, function(err, recipe){
     if(err || recipe == null){
       console.log("nem talált ilyen receptet");
       sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
@@ -173,49 +160,7 @@ function FindByTitle(value, senderId){
                     "Elkészítés: " + '\n' + recipe.description;  
 
       sendMessage(senderId, {text: message});
-    }
-  });
-}
-
-function FindByIng(value, senderId){
-  Recipe.findOne({ "ingredients" : value }, function(err, recipe){
-    if(err || recipe == null){
-      console.log("nem talált ilyen receptet");
-      sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
-    } else {
-      let ings = ""; 
-
-      recipe.ingredients.forEach(function(i){
-        ings += i + "," + '\n';
-      });
-
-      let message = recipe.title + '\n\n' +
-                    "Hozzávalók: " + '\n' + ings + '\n' +
-                    "Elkészítés: " + '\n' + recipe.description;  
-
-      sendMessage(senderId, {text: message});
-    }
-  });
-}
-
-
-function FindByDesc(value, senderId){
-  Recipe.findOne({ description : value }, function(err, recipe){
-    if(err || recipe == null){
-      console.log("nem talált ilyen receptet");
-      sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
-    } else {
-      let ings = ""; 
-
-      recipe.ingredients.forEach(function(i){
-        ings += i + "," + '\n';
-      });
-
-      let message = recipe.title + '\n\n' +
-                    "Hozzávalók: " + '\n' + ings + '\n' +
-                    "Elkészítés: " + '\n' + recipe.description;  
-
-      sendMessage(senderId, {text: message});
+      findBy = null;
     }
   });
 }
