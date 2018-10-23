@@ -79,12 +79,8 @@ function processPostback(event) {
       }
       var message = greeting;
 
-      function f(){
-        return sendMessage(senderId, {text: message})
-        .then(() => quickReplies.sendFindOrCreateQuickReplies(senderId));
-      }
-
-      f();
+      //sendMessage(senderId, {text: message})
+      //quickReplies.sendFindOrCreateQuickReplies(senderId)
     });
   }
 }
