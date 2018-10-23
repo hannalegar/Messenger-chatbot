@@ -3,8 +3,6 @@ var mongoose = require("mongoose");
 var db = mongoose.connect(process.env.MONGODB_URI);
 var Recipe = require("./models/recipes");
 
-exports.
-
 exports.findRecipe = function(findBy,value, senderId){
     Recipe.findOne({ [findBy] : value }, function(err, recipe){
       if(err || recipe == null){
