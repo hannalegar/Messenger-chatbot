@@ -121,7 +121,6 @@ function processMessage(event) {
       } else if(event.message.quick_reply.payload == "FIND_BY_TITLE"){
         sendMessage(senderId, {text: "Kérlek add meg a recept nevét"});
         findBy = "title";
-        console.log(findBy);
 
       } else if(event.message.quick_reply.payload == "FIND_BY_INGREDIENTS"){
         sendMessage(senderId, {text: "Kérlek adj meg egy hozzávalót"});
