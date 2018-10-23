@@ -6,7 +6,7 @@ var Recipe = require("./models/recipes");
 exports.findRecipe = function(findBy,value, senderId){
     Recipe.findOne({ [findBy] : value }, function(err, recipe){
       if(err || recipe == null){
-        sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
+        return "Nem találtam ilyen receptet";
       } else {
         let ings = ""; 
   
@@ -18,8 +18,8 @@ exports.findRecipe = function(findBy,value, senderId){
                       "Hozzávalók: " + '\n' + ings + '\n' +
                       "Elkészítés: " + '\n' + recipe.description;  
   
-        sendMessage(senderId, {text: message});
         findBy = null;
+        return message;
       }
     });
 }
