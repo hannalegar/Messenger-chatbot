@@ -80,14 +80,11 @@ function processPostback(event) {
       }
       var message = greeting;
 
-
-      async function func(){
-        quickReplies.sendFindOrCreateQuickReplies(senderId) = await sendMessage(senderId, {text: message});
+      async function f(){
+        let y = await sendMessage(senderId, {text: message});
       }
-      func();
 
-
-      
+      f().then(quickReplies.sendFindOrCreateQuickReplies(senderId));
 
       // sendMessage(senderId, {text: message});
       // quickReplies.sendFindOrCreateQuickReplies(senderId);
