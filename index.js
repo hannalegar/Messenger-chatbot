@@ -79,9 +79,9 @@ function processPostback(event) {
       }
       var message = greeting;
 
-      async function f(){
-        let y = await sendMessage(senderId, {text: message});
-        quickReplies.sendFindOrCreateQuickReplies(senderId);
+      function f(){
+        return sendMessage(senderId, {text: message})
+        .then(() => quickReplies.sendFindOrCreateQuickReplies(senderId));
       }
 
       f();
