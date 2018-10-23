@@ -33,8 +33,6 @@ app.get("/webhook", function (req, res) {
   }
 });
 
-
-
 // All callbacks for Messenger will be POST-ed here
 app.post("/webhook", function (req, res) {
   // Make sure this is a page subscription
@@ -128,10 +126,16 @@ function processMessage(event) {
       } else if(event.message.quick_reply.payload == "FIND_BY_DESCRIPTION"){
         sendMessage(senderId, {text: "Kérlek add meg a lerást, vagy egy részét"});
         findBy = "description";
+      } else if(event.message.quick_reply.payload == "YES"){
+        sendMessage(senderId, {text: "Jó főzicskélést!"});
+      } else if(event.message.quick_reply.payload == "NO"){
+        sendMessage(senderId, {text: "Kérsz másik receptet"});
       }  
     } else if (message.text) {  
       if(findBy != null){
         findRecipe(message.text, senderId);
+        quickReplies.yesOrNo(senderId);
+
       } else {
         sendMessage(senderId, {text: "Megkaptam az üzeneted"});
       }

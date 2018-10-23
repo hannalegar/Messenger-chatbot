@@ -56,3 +56,29 @@ exports.sendFindByQuickReplies = function(senderId){
       }
     });
   }
+
+  exports.yesOrNo = function(senderId){
+    request({
+      url: "https://graph.facebook.com/v2.6/me/messages",
+      qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+      method: "POST",
+      json : {
+        recipient : {
+            id : senderId },
+        message : {
+          text : "Ezt a receptet kerested?",
+          quick_replies :[
+            {
+              content_type :"text",
+              title :"Igen",
+              payload : "YES"
+            },
+            {
+              content_type :"text",
+              title :"Nem",
+              payload : "NO"
+            }]
+        }
+      }
+    });
+  }
