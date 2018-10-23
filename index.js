@@ -8,6 +8,8 @@ var db = mongoose.connect(process.env.MONGODB_URI);
 var Recipe = require("./models/recipes");
 
 const quickReplies = require('./quickReplies');
+const recipeFunctions = require('./recipeFunctions');
+
 var findBy;
 
 var app = express();
@@ -85,9 +87,6 @@ function processPostback(event) {
       }
 
       f().then(quickReplies.sendFindOrCreateQuickReplies(senderId));
-
-      // sendMessage(senderId, {text: message});
-      // quickReplies.sendFindOrCreateQuickReplies(senderId);
     });
   }
 }
@@ -114,10 +113,6 @@ function processMessage(event) {
     var message = event.message;
     var senderId = event.sender.id;
 
-    Recipe.schema.eachPath(function(path){
-        console.log(typeof(path));
-    });
-
     if(event.message.hasOwnProperty('quick_reply')){
       if(event.message.quick_reply.payload == "FIND_RECIPE"){
 
@@ -138,42 +133,13 @@ function processMessage(event) {
       }  
     } else if (message.text) {  
       if(findBy != null){
-        FindRecipe(message.text, senderId);
+        recipeFunctions.findRecipe(findBy, message.text, senderId);
       } else {
         sendMessage(senderId, {text: "Megkaptam az üzeneted"});
       }
 
     } else if (message.attachments) {
-
       sendMessage(senderId, {text: "Sajnos nem tudom értelmezi az üzeneted."});
-
-
-
     }
   }
-}
-
-function FindRecipe(value, senderId){
-  console.log(findBy);
-  Recipe.findOne({ [findBy] : value }, function(err, recipe){
-    console.log(findBy);
-    if(err || recipe == null){
-      console.log("nem talált ilyen receptet");
-      sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
-    } else {
-      console.log(findBy);
-      let ings = ""; 
-
-      recipe.ingredients.forEach(function(i){
-        ings += i + "," + '\n';
-      });
-
-      let message = recipe.title + '\n\n' +
-                    "Hozzávalók: " + '\n' + ings + '\n' +
-                    "Elkészítés: " + '\n' + recipe.description;  
-
-      sendMessage(senderId, {text: message});
-      findBy = null;
-    }
-  });
 }
