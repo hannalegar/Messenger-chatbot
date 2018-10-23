@@ -81,9 +81,10 @@ function processPostback(event) {
 
       async function f(){
         let y = await sendMessage(senderId, {text: message});
+        quickReplies.sendFindOrCreateQuickReplies(senderId);
       }
 
-      f().then(quickReplies.sendFindOrCreateQuickReplies(senderId));
+      f();
     });
   }
 }
@@ -134,10 +135,11 @@ function processMessage(event) {
     } else if (message.text) {  
       if(findBy != null){
         async function f2(){
-          let y = await findRecipe(message.text, senderId);;
+          let y = await findRecipe(message.text, senderId);
+          quickReplies.yesOrNo(senderId);
         }
   
-        f2().then(quickReplies.yesOrNo(senderId));
+        f2();
 
       } else {
         sendMessage(senderId, {text: "Megkaptam az üzeneted"});
