@@ -132,9 +132,7 @@ function processMessage(event) {
       }  
     } else if (message.text) {  
       if(findBy != null){
-        let res = recipeFunctions.findRecipe(findBy, message.text, senderId);
-        console.log(res);
-        sendMessage(senderId, {text: res});
+        findRecipe(message.text, senderId);
       } else {
         sendMessage(senderId, {text: "Megkaptam az üzeneted"});
       }
@@ -143,4 +141,25 @@ function processMessage(event) {
       sendMessage(senderId, {text: "Sajnos nem tudom értelmezi az üzeneted."});
     }
   }
+}
+
+function findRecipe(value, senderId){
+  Recipe.findOne({ [findBy] : value }, function(err, recipe){
+    if(err || recipe == null){
+      sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
+    } else {
+      let ings = ""; 
+
+      recipe.ingredients.forEach(function(i){
+        ings += i + "," + '\n';
+      });
+
+      let message = recipe.title + '\n\n' +
+                    "Hozzávalók: " + '\n' + ings + '\n' +
+                    "Elkészítés: " + '\n' + recipe.description;  
+
+      sendMessage(senderId, {text: message});
+      findBy = null;
+    }
+  });
 }
