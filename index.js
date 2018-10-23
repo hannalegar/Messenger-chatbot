@@ -8,7 +8,6 @@ var db = mongoose.connect(process.env.MONGODB_URI);
 var Recipe = require("./models/recipes");
 
 const quickReplies = require('./quickReplies');
-const recipeFunctions = require('./recipeFunctions');
 
 var findBy;
 
