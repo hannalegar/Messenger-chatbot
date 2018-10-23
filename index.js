@@ -137,9 +137,7 @@ function processMessage(event) {
           let y = await findRecipe(message.text, senderId);;
         }
   
-        f2();
-
-        quickReplies.yesOrNo(senderId);
+        f2().then(quickReplies.yesOrNo(senderId));
 
       } else {
         sendMessage(senderId, {text: "Megkaptam az üzeneted"});
