@@ -133,7 +133,12 @@ function processMessage(event) {
       }  
     } else if (message.text) {  
       if(findBy != null){
-        findRecipe(message.text, senderId);
+        async function f2(){
+          let y = await findRecipe(message.text, senderId);;
+        }
+  
+        f2();
+
         quickReplies.yesOrNo(senderId);
 
       } else {
