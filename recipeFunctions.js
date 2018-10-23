@@ -19,6 +19,7 @@ exports.findRecipe = function(findBy,value, senderId){
                       "Elkészítés: " + '\n' + recipe.description;  
   
         findBy = null;
+        console.log("message" + message);
         return message;
       }
     });

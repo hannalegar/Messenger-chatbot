@@ -133,6 +133,7 @@ function processMessage(event) {
     } else if (message.text) {  
       if(findBy != null){
         let res = recipeFunctions.findRecipe(findBy, message.text, senderId);
+        console.log(res);
         sendMessage(senderId, {text: res});
       } else {
         sendMessage(senderId, {text: "Megkaptam az üzeneted"});
