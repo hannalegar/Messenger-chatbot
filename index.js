@@ -79,7 +79,7 @@ function processPostback(event) {
       }
       var message = greeting;
 
-      sendMessage(senderId, {text: message})
+      await sendMessage(senderId, {text: message})
       .then( quickReplies.sendFindOrCreateQuickReplies(senderId));
     });
   }
@@ -131,7 +131,7 @@ function processMessage(event) {
     } else if (message.text) {  
       if(findBy != null){
         
-          findRecipe(message.text, senderId).then(
+          await findRecipe(message.text, senderId).then(
           quickReplies.yesOrNo(senderId));
       } else {
         sendMessage(senderId, {text: "Megkaptam az üzeneted"});
