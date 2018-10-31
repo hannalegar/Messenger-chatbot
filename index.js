@@ -79,8 +79,8 @@ function processPostback(event) {
       }
       var message = greeting;
 
-      Promise.all( sendMessage(senderId, {text: message}),
-      quickReplies.sendFindOrCreateQuickReplies(senderId));
+      new Promise( sendMessage(senderId, {text: message}))
+      .then( quickReplies.sendFindOrCreateQuickReplies(senderId));
     });
   }
 }
