@@ -79,7 +79,7 @@ function processPostback(event) {
       }
       var message = greeting;
 
-      await sendMessage(senderId, {text: message})
+      sendMessage(senderId, {text: message})
       .then( quickReplies.sendFindOrCreateQuickReplies(senderId));
     });
   }
@@ -87,7 +87,7 @@ function processPostback(event) {
 
 // sends message to user
 async function sendMessage(recipientId, message) {
-  return request({
+  return await request({
     url: "https://graph.facebook.com/v2.6/me/messages",
     qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
     method: "POST",
