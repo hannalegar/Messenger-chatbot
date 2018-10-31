@@ -80,7 +80,10 @@ function processPostback(event) {
       var message = greeting;
 
       sendMessage(senderId, {text: message})
-      .then( quickReplies.sendFindOrCreateQuickReplies(senderId));
+      .then( (res) => {
+        console.log(res);
+        return quickReplies.sendFindOrCreateQuickReplies(senderId)
+      });
     });
   }
 }
@@ -94,10 +97,6 @@ function sendMessage(recipientId, message) {
     json: {
       recipient: {id: recipientId},
       message: message,
-    }
-  }, function(error, response, body) {
-    if (error) {
-      console.log("Error sending message: " + response.error);
     }
   });
 }
