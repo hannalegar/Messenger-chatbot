@@ -87,7 +87,7 @@ function processPostback(event) {
 
 // sends message to user
 function sendMessage(recipientId, message) {
-  request({
+  return request({
     url: "https://graph.facebook.com/v2.6/me/messages",
     qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
     method: "POST",
@@ -146,7 +146,7 @@ function processMessage(event) {
 function findRecipe(value, senderId){
   Recipe.findOne({ [findBy] : value }, function(err, recipe){
     if(err || recipe == null){
-      sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
+      return sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
     } else {
       let ings = ""; 
 
@@ -158,8 +158,9 @@ function findRecipe(value, senderId){
                     "Hozzávalók: " + '\n' + ings + '\n' +
                     "Elkészítés: " + '\n' + recipe.description;  
 
-      sendMessage(senderId, {text: message});
+                    
       findBy = null;
+      return sendMessage(senderId, {text: message});
     }
   });
 }
