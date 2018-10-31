@@ -1,7 +1,7 @@
 var request = require("request-promise");
 
 exports.sendFindOrCreateQuickReplies = function(senderId){
-    return fetch({
+    return request({
       url: "https://graph.facebook.com/v2.6/me/messages",
       qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
       method: "POST",
@@ -27,7 +27,7 @@ exports.sendFindOrCreateQuickReplies = function(senderId){
   }
 
 exports.sendFindByQuickReplies = function(senderId){
-    return fetch({
+    return request({
       url: "https://graph.facebook.com/v2.6/me/messages",
       qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
       method: "POST",
@@ -58,7 +58,7 @@ exports.sendFindByQuickReplies = function(senderId){
   }
 
   exports.yesOrNo = function(senderId){
-    return fetch({
+    return request({
       url: "https://graph.facebook.com/v2.6/me/messages",
       qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
       method: "POST",
