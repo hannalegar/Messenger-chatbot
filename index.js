@@ -147,7 +147,7 @@ function processMessage(event) {
 async function findRecipe(value, senderId){
   return await Recipe.findOne({ [findBy] : value }, function(err, recipe){
     if(err || recipe == null){
-      sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
+      return sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
     } else {
       let ings = ""; 
 
@@ -161,7 +161,7 @@ async function findRecipe(value, senderId){
 
                     
       findBy = null;
-      sendMessage(senderId, {text: message});
+      return sendMessage(senderId, {text: message});
     }
   });
 }
