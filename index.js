@@ -131,7 +131,7 @@ function processMessage(event) {
     } else if (message.text) {  
       if(findBy != null){
         
-          await findRecipe(message.text, senderId).then(
+          findRecipe(message.text, senderId).then(
           quickReplies.yesOrNo(senderId));
       } else {
         sendMessage(senderId, {text: "Megkaptam az üzeneted"});
@@ -144,7 +144,7 @@ function processMessage(event) {
 }
 
 async function findRecipe(value, senderId){
-  return Recipe.findOne({ [findBy] : value }, function(err, recipe){
+  return await Recipe.findOne({ [findBy] : value }, function(err, recipe){
     if(err || recipe == null){
       sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
     } else {
