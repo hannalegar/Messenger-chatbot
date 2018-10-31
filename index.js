@@ -130,13 +130,9 @@ function processMessage(event) {
       }  
     } else if (message.text) {  
       if(findBy != null){
-        async function f2(){
-          let y = await findRecipe(message.text, senderId);
-          quickReplies.yesOrNo(senderId);
-        }
-  
-        f2();
-
+        
+          findRecipe(message.text, senderId).then(
+          quickReplies.yesOrNo(senderId));
       } else {
         sendMessage(senderId, {text: "Megkaptam az üzeneted"});
       }
@@ -147,8 +143,8 @@ function processMessage(event) {
   }
 }
 
-function findRecipe(value, senderId){
-  Recipe.findOne({ [findBy] : value }, function(err, recipe){
+async function findRecipe(value, senderId){
+  return Recipe.findOne({ [findBy] : value }, function(err, recipe){
     if(err || recipe == null){
       sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
     } else {
