@@ -1,4 +1,4 @@
-var request = require("request");
+var request = require("request-promise");
 
 exports.sendFindOrCreateQuickReplies = function(senderId){
     request({
