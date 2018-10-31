@@ -80,8 +80,7 @@ function processPostback(event) {
       var message = greeting;
 
       sendMessage(senderId, {text: message})
-      .then( quickReplies.sendFindOrCreateQuickReplies(senderId));
-    });
+    }).then( quickReplies.sendFindOrCreateQuickReplies(senderId));
   }
 }
 
