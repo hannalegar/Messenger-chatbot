@@ -79,15 +79,15 @@ function processPostback(event) {
       }
       var message = greeting;
 
-      new Promise( sendMessage(senderId, {text: message}))
+      sendMessage(senderId, {text: message})
       .then( quickReplies.sendFindOrCreateQuickReplies(senderId));
     });
   }
 }
 
 // sends message to user
-function sendMessage(recipientId, message) {
-  request({
+async function sendMessage(recipientId, message) {
+  return request({
     url: "https://graph.facebook.com/v2.6/me/messages",
     qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
     method: "POST",
