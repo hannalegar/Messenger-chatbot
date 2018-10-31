@@ -1,5 +1,5 @@
 var express = require("express");
-var request = require("request");
+var request = require("request-promise");
 var bodyParser = require("body-parser");
 
 var mongoose = require("mongoose");
@@ -86,8 +86,8 @@ function processPostback(event) {
 }
 
 // sends message to user
-async function sendMessage(recipientId, message) {
-  return await request({
+function sendMessage(recipientId, message) {
+  request({
     url: "https://graph.facebook.com/v2.6/me/messages",
     qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
     method: "POST",
@@ -131,8 +131,8 @@ function processMessage(event) {
     } else if (message.text) {  
       if(findBy != null){
         
-          findRecipe(message.text, senderId).then(
-          quickReplies.yesOrNo(senderId));
+          findRecipe(message.text, senderId)
+          .then(quickReplies.yesOrNo(senderId));
       } else {
         sendMessage(senderId, {text: "Megkaptam az üzeneted"});
       }
@@ -143,8 +143,8 @@ function processMessage(event) {
   }
 }
 
-async function findRecipe(value, senderId){
-  return await Recipe.findOne({ [findBy] : value }, function(err, recipe){
+function findRecipe(value, senderId){
+  Recipe.findOne({ [findBy] : value }, function(err, recipe){
     if(err || recipe == null){
       sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
     } else {

@@ -1,7 +1,7 @@
 var request = require("request");
 
-exports.sendFindOrCreateQuickReplies = async function(senderId){
-    return await request({
+exports.sendFindOrCreateQuickReplies = function(senderId){
+    request({
       url: "https://graph.facebook.com/v2.6/me/messages",
       qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
       method: "POST",
@@ -57,8 +57,8 @@ exports.sendFindByQuickReplies = function(senderId){
     });
   }
 
-  exports.yesOrNo = async function(senderId){
-    return await request({
+  exports.yesOrNo = function(senderId){
+    request({
       url: "https://graph.facebook.com/v2.6/me/messages",
       qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
       method: "POST",
