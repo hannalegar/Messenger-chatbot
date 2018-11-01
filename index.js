@@ -8,7 +8,13 @@ var Recipe = require("./models/recipes");
 
 const quickReplies = require('./quickReplies');
 
-var findBy;
+let findBy;
+let newRecipe = {
+  title: "",
+  ingredients: [""],
+  description: ""
+}
+let save;
 
 var app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -110,6 +116,25 @@ function processMessage(event) {
       if (findBy) {
         findRecipe(message.text, senderId)
           .then(() => { quickReplies.yesOrNo(senderId) });
+      } else if (save) {
+        switch (save) {
+          case "title":
+            newRecipe.title = message.text;
+            sendMessage(senderId, { text: "Kérlek add meg a recept hozzávalóit vesszővel elválasztva!" });
+            save = "ingredients"
+            break;
+          case "ingredients":
+            newRecipe.ingredients = message.text.split(",");
+            sendMessage(senderId, { text: "Kérlek add meg a recept leírását!" });
+            save = "description"
+            break;
+          case "description":
+            newRecipe.description = message.text;
+            createRecipe(senderId).then(() => save = undefined);
+            break;
+          default:
+            break;
+        }
       } else {
         sendMessage(senderId, { text: "Megkaptam az üzeneted." });
       }
@@ -134,12 +159,16 @@ function processPayload(payload, senderId) {
       findBy = "ingredients";
       break;
     case "YES":
-      sendMessage(senderId, { text: "Jó főzicskélést!" });
+      sendMessage(senderId, { text: "Jó főzicskélést!🍳" });
       break;
     case "NO":
       sendMessage(senderId, { text: "Kérsz másik receptet?" });
       // ki kell találni mi legyen
       break;
+    case "CREATE_RECIPE":
+      sendMessage(senderId, { text: "Kérlek add meg a recept nevét!" });
+      save = "title";
+
   }
 }
 
@@ -154,13 +183,38 @@ async function findRecipe(value, senderId) {
         ings += i + "," + '\n';
       });
 
-      let message = recipe.title + '\n\n' +
-        "Hozzávalók: " + '\n' + ings + '\n' +
-        "Elkészítés: " + '\n' + recipe.description;
-
+      let message = "📌" + recipe.title + '\n\n' +
+        "🥕Hozzávalók:" + '\n' + ings + '\n' +
+        "📜Elkészítés:" + '\n' + recipe.description;
 
       findBy = undefined;
       return sendMessage(senderId, { text: message });
     }
   });
+}
+
+async function createRecipe(senderId) {
+  return await Recipe.create(
+    {
+      user_id: senderId,
+      title: newRecipe.title,
+      ingredients: newRecipe.ingredients,
+      description: newRecipe.description
+    }, function (err, recipe) {
+      if (err) {
+        return sendMessage(senderId, { text: "Sajnálom, valamilyen hiba folytán nem tudtam elmenteni a receptet." });
+      } else {
+        let ings = "";
+
+        recipe.ingredients.forEach(function (i) {
+          ings += i + "," + '\n';
+        });
+
+        let message = "📌" + recipe.title + '\n\n' +
+          "🥕Hozzávalók:" + '\n' + ings + '\n' +
+          "📜Elkészítés:" + '\n' + recipe.description;
+
+        sendMessage(senderId, { text: "Elmentettem a receptet." + message });
+      }
+    });
 }
