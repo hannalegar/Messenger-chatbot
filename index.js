@@ -80,11 +80,10 @@ function processPostback(event) {
       var message = greeting;
 
       sendMessage(senderId, {text: message})
-      .then( (res) => {
-        console.log(res);
-        return quickReplies.sendFindOrCreateQuickReplies(senderId)
-      });
+      .then( () => { return quickReplies.sendFindOrCreateQuickReplies(senderId) } );
     });
+  } else {
+    processPayload(payload, senderId);
   }
 }
 
@@ -107,33 +106,13 @@ function processMessage(event) {
     var senderId = event.sender.id;
 
     if(event.message.hasOwnProperty('quick_reply')){
-      if(event.message.quick_reply.payload == "FIND_RECIPE"){
-
-        quickReplies.sendFindByQuickReplies(senderId);
-
-      } else if(event.message.quick_reply.payload == "FIND_BY_TITLE"){
-        sendMessage(senderId, {text: "Kérlek add meg a recept nevét"});
-        findBy = "title";
-
-      } else if(event.message.quick_reply.payload == "FIND_BY_INGREDIENTS"){
-        sendMessage(senderId, {text: "Kérlek adj meg egy hozzávalót"});
-        findBy = "ingredients";
-
-      } else if(event.message.quick_reply.payload == "FIND_BY_DESCRIPTION"){
-        sendMessage(senderId, {text: "Kérlek add meg a lerást, vagy egy részét"});
-        findBy = "description";
-      } else if(event.message.quick_reply.payload == "YES"){
-        sendMessage(senderId, {text: "Jó főzicskélést!"});
-      } else if(event.message.quick_reply.payload == "NO"){
-        sendMessage(senderId, {text: "Kérsz másik receptet"});
-      }  
+      processPayload(event.message.quick_reply.payload, senderId);
     } else if (message.text) {  
-      if(findBy != null){
-        
+      if(findBy){
           findRecipe(message.text, senderId)
-          .then(quickReplies.yesOrNo(senderId));
+          .then(() => { quickReplies.yesOrNo(senderId) } );
       } else {
-        sendMessage(senderId, {text: "Megkaptam az üzeneted"});
+        sendMessage(senderId, {text: "Megkaptam az üzeneted."});
       }
 
     } else if (message.attachments) {
@@ -142,9 +121,33 @@ function processMessage(event) {
   }
 }
 
+function processPayload(payload, senderId){
+  switch(payload){
+    case "FIND_RECIPE":
+      quickReplies.sendFindByQuickReplies(senderId);
+      break;
+    case "FIND_BY_TITLE":
+      sendMessage(senderId, {text: "Kérlek add meg a recept nevét"});
+      findBy = "title";
+      break;
+    case "FIND_BY_INGREDIENTS":
+      sendMessage(senderId, {text: "Kérlek adj meg egy hozzávalót"});
+      findBy = "ingredients";
+      break;
+    case "YES":
+      sendMessage(senderId, {text: "Jó főzicskélést!"});
+      break;
+    case "NO":
+      sendMessage(senderId, {text: "Kérsz másik receptet?"});
+      // ki kell találni mi legyen
+      break;
+  }
+}
+
+
 async function findRecipe(value, senderId){
   return await Recipe.findOne({ [findBy] : value }, function(err, recipe){
-    if(err || recipe == null){
+    if(err || recipe === null){
       return sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
     } else {
       let ings = ""; 
@@ -158,7 +161,7 @@ async function findRecipe(value, senderId){
                     "Elkészítés: " + '\n' + recipe.description;  
 
                     
-      findBy = null;
+      findBy = undefined;
       return sendMessage(senderId, {text: message});
     }
   });

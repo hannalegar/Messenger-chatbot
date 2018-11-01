@@ -35,7 +35,7 @@ exports.sendFindByQuickReplies = function(senderId){
         recipient : {
             id : senderId },
         message : {
-          text : "Mit alapján szeretnél keresni?",
+          text : "Mi alapján szeretnél keresni?",
           quick_replies :[
             {
               content_type :"text",
@@ -46,11 +46,6 @@ exports.sendFindByQuickReplies = function(senderId){
               content_type :"text",
               title :"Hozzávalók",
               payload : "FIND_BY_INGREDIENTS"
-            },
-            {
-              content_type :"text",
-              title :"Leírás",
-              payload : "FIND_BY_DESCRIPTION"
             }]
         }
       }

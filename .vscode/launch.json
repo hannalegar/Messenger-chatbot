@@ -5,7 +5,19 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Attach to node",
+            "type": "node",
+            "request": "attach",
+            "name": "Attach to local",
+            "port": 9229
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch local",
+            "program": "${workspaceFolder}/index.js",
+        },
+        {
+            "name": "Attach to heroku tunnel",
             "type": "node",
             "request": "attach",
             "port": 9090,
