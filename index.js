@@ -3,7 +3,6 @@ var request = require("request-promise");
 var bodyParser = require("body-parser");
 
 var mongoose = require("mongoose");
-
 var db = mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 var Recipe = require("./models/recipes");
 
@@ -12,7 +11,7 @@ const quickReplies = require('./quickReplies');
 var findBy;
 
 var app = express();
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.listen((process.env.PORT || 5000));
 
@@ -39,9 +38,9 @@ app.post("/webhook", function (req, res) {
   if (req.body.object == "page") {
     // Iterate over each entry
     // There may be multiple entries if batched
-    req.body.entry.forEach(function(entry) {
+    req.body.entry.forEach(function (entry) {
       // Iterate over each messaging event
-      entry.messaging.forEach(function(event) {
+      entry.messaging.forEach(function (event) {
         if (event.postback) {
           processPostback(event);
         } else if (event.message) {
@@ -68,19 +67,19 @@ function processPostback(event) {
         fields: "first_name"
       },
       method: "GET"
-    }, function(error, response, body) {
+    }, function (error, response, body) {
       var greeting = "";
       if (error) {
-        console.log("Error getting user's name: " +  error);
+        console.log("Error getting user's name: " + error);
       } else {
         var bodyObj = JSON.parse(body);
         name = bodyObj.first_name;
-        greeting = "Hello " + name + ". ";
+        greeting = "Hello " + name + ". 🙂";
       }
       var message = greeting;
 
-      sendMessage(senderId, {text: message})
-      .then( () => { return quickReplies.sendFindOrCreateQuickReplies(senderId) } );
+      sendMessage(senderId, { text: message })
+        .then(() => { return quickReplies.sendFindOrCreateQuickReplies(senderId) });
     });
   } else {
     processPayload(payload, senderId);
@@ -91,10 +90,10 @@ function processPostback(event) {
 function sendMessage(recipientId, message) {
   return request({
     url: "https://graph.facebook.com/v2.6/me/messages",
-    qs: {access_token: process.env.PAGE_ACCESS_TOKEN},
+    qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
     method: "POST",
     json: {
-      recipient: {id: recipientId},
+      recipient: { id: recipientId },
       message: message,
     }
   });
@@ -105,64 +104,63 @@ function processMessage(event) {
     var message = event.message;
     var senderId = event.sender.id;
 
-    if(event.message.hasOwnProperty('quick_reply')){
+    if (event.message.hasOwnProperty('quick_reply')) {
       processPayload(event.message.quick_reply.payload, senderId);
-    } else if (message.text) {  
-      if(findBy){
-          findRecipe(message.text, senderId)
-          .then(() => { quickReplies.yesOrNo(senderId) } );
+    } else if (message.text) {
+      if (findBy) {
+        findRecipe(message.text, senderId)
+          .then(() => { quickReplies.yesOrNo(senderId) });
       } else {
-        sendMessage(senderId, {text: "Megkaptam az üzeneted."});
+        sendMessage(senderId, { text: "Megkaptam az üzeneted." });
       }
 
     } else if (message.attachments) {
-      sendMessage(senderId, {text: "Sajnos nem tudom értelmezi az üzeneted."});
+      sendMessage(senderId, { text: "Sajnos nem tudom értelmezi az üzeneted." });
     }
   }
 }
 
-function processPayload(payload, senderId){
-  switch(payload){
+function processPayload(payload, senderId) {
+  switch (payload) {
     case "FIND_RECIPE":
       quickReplies.sendFindByQuickReplies(senderId);
       break;
     case "FIND_BY_TITLE":
-      sendMessage(senderId, {text: "Kérlek add meg a recept nevét"});
+      sendMessage(senderId, { text: "Kérlek add meg a recept nevét" });
       findBy = "title";
       break;
     case "FIND_BY_INGREDIENTS":
-      sendMessage(senderId, {text: "Kérlek adj meg egy hozzávalót"});
+      sendMessage(senderId, { text: "Kérlek adj meg egy hozzávalót" });
       findBy = "ingredients";
       break;
     case "YES":
-      sendMessage(senderId, {text: "Jó főzicskélést!"});
+      sendMessage(senderId, { text: "Jó főzicskélést!" });
       break;
     case "NO":
-      sendMessage(senderId, {text: "Kérsz másik receptet?"});
+      sendMessage(senderId, { text: "Kérsz másik receptet?" });
       // ki kell találni mi legyen
       break;
   }
 }
 
-
-async function findRecipe(value, senderId){
-  return await Recipe.findOne({ [findBy] : value }, function(err, recipe){
-    if(err || recipe === null){
-      return sendMessage(senderId, {text : "Nem találtam ilyen receptet"});
+async function findRecipe(value, senderId) {
+  return await Recipe.findOne({ [findBy]: value }, function (err, recipe) {
+    if (err || recipe === null) {
+      return sendMessage(senderId, { text: "Nem találtam ilyen receptet" });
     } else {
-      let ings = ""; 
+      let ings = "";
 
-      recipe.ingredients.forEach(function(i){
+      recipe.ingredients.forEach(function (i) {
         ings += i + "," + '\n';
       });
 
       let message = recipe.title + '\n\n' +
-                    "Hozzávalók: " + '\n' + ings + '\n' +
-                    "Elkészítés: " + '\n' + recipe.description;  
+        "Hozzávalók: " + '\n' + ings + '\n' +
+        "Elkészítés: " + '\n' + recipe.description;
 
-                    
+
       findBy = undefined;
-      return sendMessage(senderId, {text: message});
+      return sendMessage(senderId, { text: message });
     }
   });
 }
