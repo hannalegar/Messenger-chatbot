@@ -119,6 +119,7 @@ function processMessage(event) {
       sendMessage(senderId, {text: "Sajnos nem tudom értelmezi az üzeneted."});
     }
   }
+  
 }
 
 function processPayload(payload, senderId){
