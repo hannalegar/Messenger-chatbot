@@ -73,3 +73,50 @@ function setTypingIndicatorOff(recipientId) {
         }
       });
 
+
+      // káááááááááááááááááááosz
+
+function waitFor(ms) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+}
+
+async function processIngredients(text) {
+  let splittedText = text.split(",");
+  let ingredient = { amount: "", measure: "", material: "" };
+  let ingredients = [];
+
+  async function start() {
+    await asyncForEach(splittedText, async (item) => {
+
+      ingredient.amount = item.match(/\d+/)[0];
+      ingredient.measure = item.match(/(?:dl|dkg|kg|db|darab|egész|fél)/)[0];
+      ingredient.material = item.match(/.*(?:kg|dk|cl)+\s+?(.*$)/)[1];
+
+      createIngredient(ingredient)
+        .then((res) => ingredients.push(res));
+      await waitFor(200);
+    })
+    console.log('Done')
+  }
+
+  await start();
+
+  return ingredients;
+}
+
+async function createIngredient(ing) {
+  return await Ingredient.create({
+    amount: ing.amount,
+    measure: ing.measure,
+    material: ing.material
+  });
+}
+
+// káááááááááááááááááááosz
+

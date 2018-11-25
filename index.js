@@ -116,11 +116,15 @@ function processPostback(event) {
       } else {
         var bodyObj = JSON.parse(body);
         name = bodyObj.first_name;
-        greeting = "Hello " + name + ". 🙂";
+        greeting = "Hello " + name + ". 🙂";  
       }
       var message = greeting;
 
       sendMessage(senderId, { text: message })
+        .then(() => sendMessage(senderId, {text: 
+          "Egy recept kezelő chatbot vagyok, le tudsz kérdezni recepteket név és hozzávaló alapján," + 
+          "illetve fel tudsz vinni új receptet, ha kedved tartja."}))
+        .then(() => sendMessage(senderId, {text: "Ha gondod akad, akkor a menü-ben megtalálod a Help gombot segítségért."}))
         .then(() => { return quickReplies.sendFindOrCreateQuickReplies(senderId) });
     });
   } else {
@@ -178,7 +182,6 @@ function processMessage(event) {
             break;
         }
       } else {
-        processIngredients(message.text).then((res) => console.log(res));
         sendMessage(senderId, { text: "Megkaptam az üzeneted." });
       }
 
@@ -214,52 +217,6 @@ function processPayload(payload, senderId) {
 
   }
 }
-
-// káááááááááááááááááááosz
-
-function waitFor(ms) {
-  return new Promise(r => setTimeout(r, ms));
-}
-
-async function asyncForEach(array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
-  }
-}
-
-async function processIngredients(text) {
-  let splittedText = text.split(",");
-  let ingredient = { amount: "", measure: "", material: "" };
-  let ingredients = [];
-
-  async function start() {
-    await asyncForEach(splittedText, async (item) => {
-
-      ingredient.amount = item.match(/\d+/)[0];
-      ingredient.measure = item.match(/(?:dl|dkg|kg|db|darab|egész|fél)/)[0];
-      ingredient.material = item.match(/.*(?:kg|dk|cl)+\s+?(.*$)/)[1];
-
-      createIngredient(ingredient)
-        .then((res) => ingredients.push(res));
-      await waitFor(200);
-    })
-    console.log('Done')
-  }
-
-  await start();
-
-  return ingredients;
-}
-
-async function createIngredient(ing) {
-  return await Ingredient.create({
-    amount: ing.amount,
-    measure: ing.measure,
-    material: ing.material
-  });
-}
-
-// káááááááááááááááááááosz
 
 async function findRecipe(value, senderId) {
   return await Recipe.findOne({ [findBy]: value }, function (err, recipe) {
