@@ -229,9 +229,36 @@ function processPayload(payload, senderId) {
     case "SUBSCRIBE":
       sendMessage(senderId, { text: "Sikeresen feliratkoztál! Mostantól, ha valaki új receptet hoz létre, küldök róla értesítést."})
       break;
+    case "RANDOM":
+      findRandom(senderId);
+      break;
   }
 }
 
+async function findRandom(senderId){
+  return await Recipe.countDocuments().exec(function(err, count){
+    let rnd = Math.floor(Math.random() * count);
+
+    Recipe.findOne().skip(rnd).exec(function(err, recipe){
+      if(err){
+        return sendMessage(senderId, { text: "Sajnálom, valami hiba folytán ez a funkció most nem működik."})
+      } else {
+        let ings = "";
+
+        recipe.ingredients.forEach(function (i) {
+          ings += i + "," + '\n';
+        });
+
+        let message = "📌" + recipe.title + '\n\n' +
+          "🥕Hozzávalók:" + '\n' + ings + '\n' +
+          "📜Elkészítés:" + '\n' + recipe.description;
+
+        findBy = undefined;
+        return sendMessage(senderId, { text: message });
+      }
+    });
+  }); 
+}
 async function findRecipe(value, senderId) {
   return await Recipe.findOne({ [findBy]: value }, function (err, recipe) {
     if (err || recipe === null) {
