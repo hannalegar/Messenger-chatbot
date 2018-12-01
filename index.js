@@ -182,9 +182,9 @@ function processMessage(event) {
             break;
         }
       } else {
-        sendMessage(senderId, { text: "Megkaptam az üzeneted." });
+        sendMessage(senderId, { text: "Megkaptam az üzeneted, de sajnos nem tudom értelmezni." + 
+        "Amennyiben elakadtél, a menüből megtalálhatod a segítséget a bot alkalmazásához. :)" });
       }
-
     } else if (message.attachments) {
       sendMessage(senderId, { text: "Sajnos nem tudom értelmezi az üzeneted." });
     }
@@ -197,11 +197,11 @@ function processPayload(payload, senderId) {
       quickReplies.sendFindByQuickReplies(senderId);
       break;
     case "FIND_BY_TITLE":
-      sendMessage(senderId, { text: "Kérlek add meg a recept nevét" });
+      sendMessage(senderId, { text: "Kérlek add meg a recept nevét!" });
       findBy = "title";
       break;
     case "FIND_BY_INGREDIENTS":
-      sendMessage(senderId, { text: "Kérlek adj meg egy hozzávalót" });
+      sendMessage(senderId, { text: "Kérlek adj meg egy hozzávalót!" });
       findBy = "ingredients";
       break;
     case "YES":
@@ -214,7 +214,21 @@ function processPayload(payload, senderId) {
     case "CREATE_RECIPE":
       sendMessage(senderId, { text: "Kérlek add meg a recept nevét!" });
       save = "title";
+    case "HELP":
+        let message = "Ez egy nagyon egyszerú chatbot, amely a következő funkciókkal rendelkezik:\n" + 
+                      " - Lehet receptek után keresni név, és hozzávaló alapján,\n" + 
+                      " - illetve hozzá lehet adni új recepteket, \n" +
+                      " - továbbá fel lehet iratkozni a chatbotra." +
+                      "\n\nAz összes funkció elérhető a menüből." + 
+                      "\n\nÚj recept hozzáadásánál rendkívül fontos, hogy ügyelni kell a hozzávalók leírásánál, hogy azok vesszővel legyenek elválasztva." + 
+                      "\n\nAmennyiben szeretnél értesítést kapni minden alkalommal, mikor új recept kerül létrehozásra, íratkozz fel!" + 
+                      "\n🙂🙂🙂";
 
+      sendMessage(senderId, { text: message });
+      break;
+    case "SUBSCRIBE":
+      sendMessage(senderId, { text: "Sikeresen feliratkoztál! Mostantól, ha valaki új receptet hoz létre, küldök róla értesítést."})
+      break;
   }
 }
 
