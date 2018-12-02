@@ -5,6 +5,8 @@ var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 var db = mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 var Recipe = require("./models/recipes");
+
+
 var Ingredient = require("./models/ingredient");
 
 let dictionary = {
@@ -259,6 +261,7 @@ async function findRandom(senderId){
     });
   }); 
 }
+
 async function findRecipe(value, senderId) {
   return await Recipe.findOne({ [findBy]: value }, function (err, recipe) {
     if (err || recipe === null) {
